@@ -1,0 +1,26 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&family=Roboto:wght@300&display=swap');
+
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@100;300;400;700;900&family=Montserrat:wght@300;400;500;600&family=Roboto:wght@300&display=swap');
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Lato:wght@100;300;400;700;900&family=Montserrat:wght@300;400;500;600&family=Roboto:wght@300&display=swap');
+
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+Accordion > li {
+  background-color: red;
+}
+
+@keyframes flicker {
+  0% { opacity: 1; }
+  50% { opacity: 0.9; }
+  100% { opacity: 1; }
+}
+
+.flicker {
+  animation: flicker 1s infinite;
+}
+
+
