@@ -29,7 +29,7 @@ const Activate = () => {
   }, []);
 
   if (verified) {
-    navigate("/verified");
+    navigate("/login");
   }
 
 

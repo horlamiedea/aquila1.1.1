@@ -3,14 +3,16 @@ import ImgRight from "../../assets/aa.png";
 import Logo from "../../assets/Aquila-Logo 1.png";
 import LoginRightImage from "../../assets/SVGsreg.png";
 import { useEffect, useState } from "react";
-import api from "../../services/api";
+// import api from "../../services/api";
 import { BiSolidChevronDown } from "react-icons/bi";
 import { toast } from "react-toastify";
 
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 // const COMPANY_REGEX = /^[A-Za-z0-9 ]*$/;
-const COMPANY_REGEX = /^[a-zA-Z0-9\s\-!@#$%^&*()_+={}[\]:;"'<>,.?/|]*$/;
+const COMPANY_REGEX =/^[a-zA-Z0-9 ]{1,}$/;
+
 
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
 const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
@@ -26,7 +28,9 @@ const Signup = () => {
   // const [user, setUser] = useState("");
   
   const [submitted, setSubmitted] = useState(false);
-  // const [validName, setValidName] = useState(false);
+  const [showText, setShowText] = useState(false);
+  const [storedEmail, setStoredEmail] = useState("")
+
   const [firstName, setFirstName] = useState("");
   const [validFirstName, setValidFirstName] = useState(false);
   const [firstNameFocus, setFirstNameFocus] = useState(false);
@@ -135,10 +139,24 @@ const Signup = () => {
       !phoneNumber
     ) {
       return toast.error("Fill all fields");
+
     }
+    if (
+      !validMatch ||
+      !validPassword ||
+      !validEmail ||
+      !validCompany ||
+      !validPhoneNumber ||
+      !validFirstName ||
+      !validJobTitle ||
+      !validLastName
+    )
+      return;
     try {
+
       setIsLoading(true);
-      await api.post("/auth/register/", {
+      setStoredEmail(email)
+      await axios.post("https://aquiladev.livelysea-9b4d3851.westus2.azurecontainerapps.io/auth/register/", {
         first_name: firstName,
         last_name: lastName,
         username,
@@ -149,7 +167,7 @@ const Signup = () => {
         phone_number: phoneNumber,
       });
 
-      toast.success("Account Created, check email for verification");
+      // toast.success("Account Created, check email for verification");
       setFirstName("");
       setLastName("");
       setUsername("");
@@ -162,10 +180,11 @@ const Signup = () => {
       setIsLoading(false);
       setSubmitted(false);
       // navigate("/verified");
+      setShowText(true)
     } catch (error) {
       if (error) {
         setIsLoading(false);
-        console.log(error);
+       
       }
       if (error.response?.status === 400) {
         if (error.response.data.errors.email) {
@@ -188,15 +207,16 @@ const Signup = () => {
       toast.error("Network Error");
     }
   };
-  console.log(handleSubmit, 'submit')
+  
 
   return (
     <div className="flex relative w-full justify-center items-center h-screen bg-grey2 text-grey ">
-      <div className=" bg-white w-full z-10 shadow-lg md:w-[70%] h-auto py-8 lg:rounded-md ">
+      <div className=" bg-white w-full z-10 shadow-lg md:w-[70%] h-auto py-8 lg:rounded-md relative ">
+      {showText && <div className=" min-w-fit absolute  top-32 lg:top-8 md:top-6 right-6  md:right-4 lg:right-12  py-3 px-5 bg-accent rounded-lg">  <p>Verification link has been sent to</p> <p className="font-semibold text-grey">{storedEmail}</p> </div>}
         <div className="text-center md:text-left mt-40 md:mt-0 md:ml-20">
           <img src={Logo} className="w-[7rem] mx-auto md:mx-0" />
           <p className="text-sm md:text-lg">
-            Start with your free account Today
+            Start with your free <br/>account Today
           </p>
         </div>
         <div className=" flex flex-col-reverse mx-6 md:flex-row justify-around items-center h-full md:mx-10">
@@ -292,7 +312,7 @@ const Signup = () => {
                     : "hidden"
                 }
               >
-             Username
+             Username must be atleast four characters
               </p>
 
               </div>
@@ -513,6 +533,7 @@ const Signup = () => {
             </div>
           </div>
           <div className="w-[60%] md:w-[35%] my-4 md:my-0 ">
+            
             <div className="flex flex-col justify-center items-center">
               <img src={LoginRightImage} />
               <div className="text-center mt-6">

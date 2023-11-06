@@ -30,7 +30,7 @@ import CookieConsent from "./web/components/CookiesConsent";
 import CusRep from "./web/Chat/admin/CusRep";
 import CusRepLogin from "./web/Chat/admin/CusRepLogin";
 import { ADD_CUSTOMER_REP } from "./redux/slice/chat";
-import UpdateProfile from "./web/auth/UpdateProfile";
+import UpdateProfile from "./web/auth/UpdatedProfile";
 
 
 

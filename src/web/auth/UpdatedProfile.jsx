@@ -118,6 +118,7 @@ const UpdateProfile = () => {
     e.preventDefault();
     setIsLoading(true);
     setSubmitted(true)
+    
     const payload = {
       first_name: firstName,
       last_name: lastName,
@@ -481,4 +482,3 @@ const UpdateProfile = () => {
 };
 
 export default UpdateProfile;
-

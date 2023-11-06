@@ -44,7 +44,7 @@ function Monitor() {
         </div>
         <div className="relative bg-white w-full md:w-1/2 h-[34rem] md:h-screen flex flex-col items-center pt-12 md:pt-64 md:mt-0">
 
-          <img src={Logo} alt="" />
+          <img src={Logo} alt="logo" className="-mt-28" />
           <div className="text-grey text-center mt-8">
             <p className="uppercase text-xs font-lato">Stay tuned</p>
             <p className="uppercase text-4xl mt-8 font-lato font-bold">

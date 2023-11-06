@@ -467,42 +467,35 @@ const ProjectReportAPK = () => {
                   <p className="text-sm pb-7 my-1">
                     {scanFile?.code_analysis[vulnerability]?.metadata?.ref}
                   </p>
-                  {/* <p className="text-xl mt-3">Regulatory</p>
+                  <p className="text-xl mt-3">Regulatory</p>
                   <div className="flex justify-between">
                     <div className="my-4">
                       <div className="">
-                        <p className="text-sm">FISMA LOW:</p>
+                        <p className="text-sm">CWE :</p>
                         <p className="text-red text-xs">
-                          SC-13 CRYPTOGRAPHIC PROTECTION
+                        {scanFile?.code_analysis[vulnerability]?.metadata?.cwe}
                         </p>
-                        <p className="text-red text-xs">
-                          SC-13 CRYPTOGRAPHIC PROTECTION
-                        </p>
+                        
                       </div>
                       <div className="">
                         <p className="text-sm">Risk OWASP:</p>
                         <p className="text-red text-xs">
-                          MSTG-NETWORK-3 (OWASP MASVS v1.5.0)
+                        {
+                        scanFile?.code_analysis[vulnerability]?.metadata
+                          ?.owasp_mobile
+                      }
                         </p>
-                        <p className="text-red text-xs">
-                          MASVS-NETWORK-1 (OWASP MASVS v2.0.0)
-                        </p>
+                       
                       </div>
                       <div className="">
-                        <p className="text-sm">FFIEC:</p>
+                        <p className="text-sm">Seveirty:</p>
                         <p className="text-red text-xs">
-                          May violate D3.PC.Am.Int.7
+                        {scanFile?.code_analysis[vulnerability]?.metadata?.severity}
                         </p>
                       </div>
-                      <div className="">
-                        <p className="text-sm">HIPAA:</p>
-                        <p className="text-red text-xs">
-                          May violate §164.312(e)(1): Standard: Transmission
-                          security.
-                        </p>
-                      </div>
+                      
                     </div>
-                    <div className="">
+                    {/* <div className="">
                       <div className="">
                         <p className="text-sm">ioXt:</p>
                         <p className="text-red text-xs">SI110</p>
@@ -517,13 +510,13 @@ const ProjectReportAPK = () => {
                         <p className="text-sm">PCI:</p>
                       </div>
                       <div className="">
-                        <p className="text-sm">CWE Top 25:</p>
+                        <p className="text-sm"><b>CVSS:</b>  {scanFile?.code_analysis[vulnerability]?.metadata?.cvss}</p>
                         <p className="text-red text-xs">
                           2021 CWE Top 25 Most Dangerous Software Errors
                         </p>
                       </div>
-                    </div>
-                  </div> */}
+                    </div> */}
+                  </div>
                 </div>
               )}
               <div className="mt-10">
