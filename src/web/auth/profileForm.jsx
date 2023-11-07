@@ -5,12 +5,9 @@ import { useEffect, useState } from "react";
 import api from "../../services/api";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 const COMPANY_REGEX = /^[a-zA-Z0-9\s\-!@#$%^&*()_+={}[\]:;"'<>,.?/|]*$/;
 
-const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
 const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-const USERNAME_REGEX = /^.{4,}$/;
 const FIRSTNAME_REGEX = /^.{4,}$/;
 const LASTNAME_REGEX = /^.{4,}$/;
 const JOBTITLE_REGEX = /^.{2,}$/;
@@ -33,9 +30,7 @@ const ProfileUpdateForm = () => {
     const [validLastName, setValidLastName] = useState(false);
     const [lastNameFocus, setLastNameFocus] = useState(false);
   
-    const [username, setUsername] = useState("");
-    const [validName, setValidName] = useState(false);
-    const [usernameFocus, setUsernameFocus] = useState(false);
+
   
     const [jobTitle, setJobTitle] = useState("");
     const [validJobTitle, setValidJobTitle] = useState(false);
@@ -53,15 +48,9 @@ const ProfileUpdateForm = () => {
     const [validEmail, setValidEmail] = useState(false);
     const [emailFocus, setEmailFocus] = useState(false);
   
-    const [password, setPassword] = useState("");
-    const [validPassword, setValidPassword] = useState(false);
-    const [passwordFocus, setPasswordFocus] = useState(false);
+   
   
-    const [matchPassword, setMatchPassword] = useState("");
-    const [validMatch, setValidMatch] = useState(false);
-    const [matchFocus, setMatchFocus] = useState(false);
-  
-    const [originalEmail, setOriginalEmail] = useState(null);
+    // const [originalEmail, setOriginalEmail] = useState(null);
   
     useEffect(() => {
       setValidFirstName(FIRSTNAME_REGEX.test(firstName));
@@ -71,9 +60,7 @@ const ProfileUpdateForm = () => {
       setValidLastName(LASTNAME_REGEX.test(lastName));
     }, [lastName]);
   
-    useEffect(() => {
-      setValidName(USERNAME_REGEX.test(username));
-    }, [username]);
+    
   
     useEffect(() => {
       setValidJobTitle(JOBTITLE_REGEX.test(jobTitle));
@@ -87,10 +74,7 @@ const ProfileUpdateForm = () => {
       setValidCompany(COMPANY_REGEX.test(company));
     }, [company]);
   
-    useEffect(() => {
-      setValidPassword(PWD_REGEX.test(password));
-      setValidMatch(password === matchPassword);
-    }, [password, matchPassword]);
+   
   
     useEffect(() => {
       setValidPhoneNumber(PHONENUMBER_REGEX.test(phoneNumber));
@@ -102,7 +86,7 @@ const ProfileUpdateForm = () => {
         try {
           const response = await api.get("/auth/profile/"); 
           setEmail(response.data.email);
-          setOriginalEmail(response.data.email);
+          // setOriginalEmail(response.data.email);
           
         } catch (error) {
           toast.error("Failed to fetch user profile.");
@@ -120,18 +104,17 @@ const ProfileUpdateForm = () => {
       const payload = {
         first_name: firstName,
         last_name: lastName,
-        username,
         job_title: jobTitle,
         company,
         phone_number: phoneNumber,
       };
   
-      if (email !== originalEmail) { // Only add email to the payload if it's changed
-        payload.email = email;
-      }
+      // if (email !== originalEmail) { // Only add email to the payload if it's changed
+      //   payload.email = email;
+      // }
   
       try {
-        await axios.patch("https://aquiladev.livelysea-9b4d3851.westus2.azurecontainerapps.io/auth/profile/", payload);
+        await api.patch("/auth/profile/", payload);
         toast.success("Profile Updated Successfully!");
         setIsLoading(false);
         navigate('/login');
@@ -152,6 +135,7 @@ const ProfileUpdateForm = () => {
       
       <form onSubmit={handleUpdate}>
       <div className="flex flex-col justify-center">
+        <p className="py-2 font-semibold">Please update your profile</p>
                 <div className="flex  flex-col gap-2 justify-between md:flex-row">
                   <div className="flex flex-col w-4/5 md:w-1/2">
                     <label
@@ -215,37 +199,9 @@ const ProfileUpdateForm = () => {
                 </div>
 
                 <div className="flex gap-2 justify-center flex-col md:flex-row">
-                  <div className="flex flex-col  w-4/5 md:w-1/2">
-                    <label
-                      htmlFor="Work Email"
-                      className="font-lato text-sm mb-1 ml-2 mt-2 text-grey"
-                    >
-                      Username*
-                    </label>
-                    <input
-                      type="text"
-                      value={username}
-                      onChange={(e) => setUsername(e.target.value)}
-                      onFocus={() => setUsernameFocus(true)}
-                      onBlur={() => setUsernameFocus(false)}
-                      className=" py-2 pl-5  outline-none bg-white  rounded-md border-2 border-grey2"
-                    />
-                    <p
-                      id="uidnote"
-                      className={
-                        (username &&
-                          !validName &&
-                          (!usernameFocus || submitted)) ||
-                        (!username && submitted && !validName)
-                          ? "inline-block text-red text-[10px] ml-1  text-left md:ml-4  w-full md:text-[12px]"
-                          : "hidden"
-                      }
-                    >
-                      Username
-                    </p>
-                  </div>
+                  
 
-                  <div className="flex flex-col w-4/5 md:w-1/2">
+                  <div className="flex flex-col w-4/5 md:w-full">
                     <label
                       htmlFor="Job Tittle"
                       className="font-lato text-sm mb-1 ml-2 mt-2 text-grey"
@@ -285,7 +241,7 @@ const ProfileUpdateForm = () => {
                   <input
                     type="text"
                     value={email}
-                    onChange={(e) => setEmail(e.target.value)}
+                    // onChange={(e) => setEmail(e.target.value)}
                     onFocus={() => setEmailFocus(true)}
                     onBlur={() => setEmailFocus(false)}
                     className=" py-2 pl-5  outline-none bg-white  rounded-md border-2 border-grey2"
@@ -363,7 +319,7 @@ const ProfileUpdateForm = () => {
                     </p>
                   </div>
                 </div>
-                <div className="flex gap-2  justify-between flex-col md:flex-row">
+                {/* <div className="flex gap-2  justify-between flex-col md:flex-row">
                   <div className="flex flex-col w-4/5 md:w-1/2 ">
                     <label
                       htmlFor="password"
@@ -422,7 +378,7 @@ const ProfileUpdateForm = () => {
                       Must match the first password input field.
                     </p>
                   </div>
-                </div>
+                </div> */}
 
                 <div className="w-4/5 md:w-full">
                  

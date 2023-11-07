@@ -156,7 +156,7 @@ const Signup = () => {
 
       setIsLoading(true);
       setStoredEmail(email)
-      await axios.post("https://aquiladev.livelysea-9b4d3851.westus2.azurecontainerapps.io/auth/register/", {
+      await axios.post("https://aquilatest.livelysea-9b4d3851.westus2.azurecontainerapps.io/auth/register/", {
         first_name: firstName,
         last_name: lastName,
         username,
@@ -212,7 +212,11 @@ const Signup = () => {
   return (
     <div className="flex relative w-full justify-center items-center h-screen bg-grey2 text-grey ">
       <div className=" bg-white w-full z-10 shadow-lg md:w-[70%] h-auto py-8 lg:rounded-md relative ">
-      {showText && <div className=" min-w-fit absolute  top-32 lg:top-8 md:top-6 right-6  md:right-4 lg:right-12  py-3 px-5 bg-accent rounded-lg">  <p>Verification link has been sent to</p> <p className="font-semibold text-grey">{storedEmail}</p> </div>}
+
+      {showText && 
+      <div className=" min-w-fit absolute  top-32 lg:top-8 md:top-6 right-6  md:right-4 lg:right-12  py-3 px-5 bg-accent rounded-lg"> 
+       <p>Verification link has been sent to</p> <p className="font-semibold text-grey">{storedEmail}</p> 
+      </div>}
         <div className="text-center md:text-left mt-40 md:mt-0 md:ml-20">
           <img src={Logo} className="w-[7rem] mx-auto md:mx-0" />
           <p className="text-sm md:text-lg">

@@ -6,7 +6,9 @@ const initialState = {
   profile: null,
   currentProject: "",
   reports: null,
-  scanFile : null
+  scanFile : null,
+  reportHistory : null,
+  reportHistoryId : "",
 };
 
 const appStateSlice = createSlice({
@@ -31,6 +33,14 @@ const appStateSlice = createSlice({
     SET_SCANFILE: (state, action) => {
       state.scanFile = action.payload;
     },
+
+    SET_REPORT_HISTORY: (state, action) => {
+      state.reportHistory = action.payload;
+    },
+
+    SET_REPORT_HISTORY_ID: (state, action) => {
+      state.reportHistoryId = action.payload;
+    },
   },
 });
 export const {
@@ -39,6 +49,8 @@ export const {
   ADD_PROFILE,
   SET_CURRENTPROJECT,
   SET_REPORT,
-  SET_SCANFILE
+  SET_SCANFILE, 
+  SET_REPORT_HISTORY,
+  SET_REPORT_HISTORY_ID
 } = appStateSlice.actions;
 export default appStateSlice.reducer;

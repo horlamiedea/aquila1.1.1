@@ -67,6 +67,7 @@ const ProjectDetail = () => {
   return (
     <div className="bg-grey2 h-full text-grey ">
       <Navbar />
+      
       {loading ? (
         <div className="h-screen  flex justify-center items-center">
           <i className="fa-solid fa-spinner fa-spin-pulse fa-3x"></i>

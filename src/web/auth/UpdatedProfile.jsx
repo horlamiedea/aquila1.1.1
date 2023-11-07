@@ -371,7 +371,7 @@ const UpdateProfile = () => {
                     </p>
                   </div>
                 </div>
-                <div className="flex gap-2  justify-between flex-col md:flex-row">
+                {/* <div className="flex gap-2  justify-between flex-col md:flex-row">
                   <div className="flex flex-col w-4/5 md:w-1/2 ">
                     <label
                       htmlFor="password"
@@ -430,7 +430,7 @@ const UpdateProfile = () => {
                       Must match the first password input field.
                     </p>
                   </div>
-                </div>
+                </div> */}
 
                 <div className="w-4/5 md:w-full">
                   <div className="flex  mt-2   items-center px-2 py-2 pl-5  outline-none bg-white  rounded-md border-2 border-grey2 w-4/8">

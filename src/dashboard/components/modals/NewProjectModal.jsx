@@ -42,7 +42,7 @@ const [submitted, setSubmitted] = useState(false)
     }
     
   return (
-    <div className="bg-black shadow-lg shadow-neutral-500/50 h-screen absolute  w-full flex justify-center items-center backdrop-filter backdrop-blur-sm bg-opacity-50  z-999">
+    <div className="bg-black shadow-lg shadow-neutral-500/50 z-10 h-screen absolute  w-full flex justify-center items-center backdrop-filter backdrop-blur-sm bg-opacity-50">
       <div className="bg-white w-[90%] md:w-[40%] h-[13rem] flex items-center pl-12 rounded-md relative ">
       <AiOutlineClose onClick={() => disPatch(TOGGLE_OPENMODAL())}   className="absolute top-3 right-3 cursor-pointer" />
         <div className="">

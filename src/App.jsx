@@ -31,6 +31,7 @@ import CusRep from "./web/Chat/admin/CusRep";
 import CusRepLogin from "./web/Chat/admin/CusRepLogin";
 import { ADD_CUSTOMER_REP } from "./redux/slice/chat";
 import UpdateProfile from "./web/auth/UpdatedProfile";
+import ReportHistoryApk from "./dashboard/pages/ReportHistoryApk";
 
 
 
@@ -104,6 +105,10 @@ function App() {
             <Route
               path="/dashboard/project/report/ios"
               element={<ProjectReportIOS />}
+            />
+            <Route
+              path="/dashboard/project/report/report-history"
+              element={<ReportHistoryApk />}
             />
             <Route />
           </Route>

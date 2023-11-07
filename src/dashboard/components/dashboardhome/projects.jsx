@@ -9,14 +9,7 @@ import { IoIosAppstore } from "react-icons/io";
 import { RiGooglePlayFill } from "react-icons/ri";
 
 // Assuming these are your modal views
-const InitialModalView = ({ onGoToUpdate }) => (
-  <>
-    <p>Please update your profile to continue.</p>
-    <button onClick={onGoToUpdate} className="bg-red text-white px-4 py-2 mt-4 rounded">
-      Update Profile
-    </button>
-  </>
-);
+
 
 
 
@@ -25,18 +18,16 @@ const Projects = () => {
   const { projects, profile } = useSelector((state) => state.appState);
   const disPatch = useDispatch();
   const navigate = useNavigate();
-  const [modalView, setModalView] = useState('initial'); 
+
 
   useEffect(() => {
-    if (!profile.last_name) {
+    if (!profile?.last_name) {
       setShowModal(true);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const handleUpdateProfile = () => {
-    setModalView('updateProfile'); 
-  };
+
 
   const handleCloseModal = () => {
     setShowModal(false);
@@ -56,12 +47,10 @@ const Projects = () => {
       {showModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
           <div className="bg-white p-6 rounded-md shadow-lg max-w-xl mx-4">
-            {modalView === 'initial' && (
-              <InitialModalView onGoToUpdate={handleUpdateProfile} />
-            )}
-            {modalView === 'updateProfile' && (
+          
+            
               <ProfileUpdateForm onClose={handleCloseModal} />
-            )}
+           
           </div>
         </div>
       )}
