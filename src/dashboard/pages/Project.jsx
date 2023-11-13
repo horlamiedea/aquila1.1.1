@@ -68,7 +68,7 @@ const Project = () => {
       
         console.log(error);
         if (error?.response?.status === 400) {
-          toast.error(error?.response?.data?.file[0]);
+          toast.error(error?.response?.data?.file[0] || error?.response?.data?.project_name[0]);
         } else {
          return toast.error("Network Error");
         }
@@ -151,7 +151,7 @@ const Project = () => {
     <div className="bg-grey2 text-grey ">
       <Navbar />
       <div className="w-[80%] mx-auto h-screen pt-24">
-        <div className="flex items-center gap-1">
+        <div className="flex items-center gap-1 ">
           <BsFillFolderFill />
           <p>{project_name}</p>
         </div>

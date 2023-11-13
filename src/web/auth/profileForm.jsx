@@ -109,9 +109,7 @@ const ProfileUpdateForm = () => {
         phone_number: phoneNumber,
       };
   
-      // if (email !== originalEmail) { // Only add email to the payload if it's changed
-      //   payload.email = email;
-      // }
+    
   
       try {
         await api.patch("/auth/profile/", payload);

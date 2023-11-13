@@ -1,9 +1,9 @@
-import { useState, useEffect } from "react";
+
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import { SET_CURRENTPROJECT } from "../../../redux/slice/appState";
 import { navigateToDashboard } from "../../utils/UtilFunction";
-import ProfileUpdateForm from "../../../web/auth/profileForm";
+
 import { FaFolderClosed } from "react-icons/fa6";
 import { IoIosAppstore } from "react-icons/io";
 import { RiGooglePlayFill } from "react-icons/ri";
@@ -14,24 +14,16 @@ import { RiGooglePlayFill } from "react-icons/ri";
 
 
 const Projects = () => {
-  const [showModal, setShowModal] = useState(false);
-  const { projects, profile } = useSelector((state) => state.appState);
+
+  const { projects } = useSelector((state) => state.appState);
   const disPatch = useDispatch();
   const navigate = useNavigate();
 
 
-  useEffect(() => {
-    if (!profile?.last_name) {
-      setShowModal(true);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  
 
+ 
 
-
-  const handleCloseModal = () => {
-    setShowModal(false);
-  };
 
   const setCurrentProject = (name) => {
     disPatch(SET_CURRENTPROJECT(name));
@@ -44,24 +36,15 @@ const Projects = () => {
 
   return (
     <div className="flex flex-wrap justify-center gap-10">
-      {showModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-          <div className="bg-white p-6 rounded-md shadow-lg max-w-xl mx-4">
-          
-            
-              <ProfileUpdateForm onClose={handleCloseModal} />
-           
-          </div>
-        </div>
-      )}
+      
      {projects?.map((project, i) => (
         <div  key={i} onClick={() => setCurrentProject(project.name)}>
-          <div className="flex flex-col items-center  bg-white drop-shadow-sm border-2 border-grey2  py-4 h-28 w-28 px-6  rounded-2xl">
+          <div className="flex flex-col items-center justify-center  bg-white drop-shadow-sm border-2 border-grey2  py-2 w-40 h-36 px-2  rounded-2xl">
             <FaFolderClosed color="red" size={40} />
-            <p className="text-lg">{project.name}</p>
+            <p className="text-lg text-center">{project.name}</p>
             <div className="flex justify-center gap-2">
-              {project.apk && <RiGooglePlayFill size={10} />}
-              {project.ipa && <IoIosAppstore size={10} />}
+              {project.apk && <RiGooglePlayFill color="red" size={14} />}
+              {project.ipa && <IoIosAppstore color="red" size={14} />}
             </div>
           </div>
         </div>

@@ -8,7 +8,7 @@ const initialState = {
   reports: null,
   scanFile : null,
   reportHistory : null,
-  reportHistoryId : "",
+  reportHistoryId : null,
 };
 
 const appStateSlice = createSlice({

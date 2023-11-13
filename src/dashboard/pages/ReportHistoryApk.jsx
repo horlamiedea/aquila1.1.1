@@ -4,25 +4,25 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { BsAndroid2, BsFillFolderFill } from "react-icons/bs";
 import { useEffect, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 import {
+  BiChevronLeft,
   BiSolidChevronDown,
   BiSolidChevronUp,
   BiSolidChevronsRight,
 } from "react-icons/bi";
 import baseURL from "../../services/baseUrl";
-import api from "../../services/api";
-import { SET_REPORT } from "../../redux/slice/appState";
+import { Link } from "react-router-dom";
 
 const ReportHistoryApk = () => {
   const {
     currentProject,
-    scanFile,
     reports,
+    reportHistory,
+    reportHistoryId,
     currentProject: project_name,
   } = useSelector((state) => state.appState);
-  const dispatch = useDispatch();
+
   const [downloadOptions, setDownloadOptions] = useState("");
   const [toggleWarning, setToggleWarning] = useState(true);
   const [sendOptions, setSendOptions] = useState("");
@@ -30,32 +30,24 @@ const ReportHistoryApk = () => {
   const [toggleInfo, setToggleInfo] = useState(false);
   // const [toggleHigh, setToggleHigh] = useState(false);
   const [toggleGood, setToggleGood] = useState(false);
+  const [reportToShow, setReportToShow] = useState(null);
 
   const [vulnerability, setVulnerility] = useState(
     "IP Address Disclosure in Android"
   );
   const [machoAnalysis, setMachoAnalysis] = useState("");
-  useEffect(() => {
-    const fetchReport = async () => {
-      try {
-        // setLoading(true);
-        const res = await api.get("/api/reports/", {
-          params: {
-            project_name,
-          },
-        });
-        dispatch(SET_REPORT(res.data));
-        localStorage.setItem("report", JSON.stringify(res.data));
-        // setLoading(false);
-      } catch (error) {
-        console.error(error);
-        // setLoading(false);
-      }
-    };
-    fetchReport();
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+  const filterReportHistory = () => {
+    const result = reportHistory?.data?.apk.find(
+      (item) => item?.id === reportHistoryId
+    );
+    setReportToShow(result);
+  };
+  useEffect(() => {
+    filterReportHistory();
   }, []);
+
+
 
   const handleMachoAnlysis = (key) => {
     setVulnerility("");
@@ -84,9 +76,9 @@ const ReportHistoryApk = () => {
     const token = JSON.parse(localStorage.getItem("user"));
     const params = {
       project_name,
-      apk: pdfType === "apk" ? true : false,
-      id: reports?.data[pdfType][0]?.id,
-      ipa: pdfType === "ios" ? true : false,
+      apk: true,
+      id: reportHistoryId,
+      ipa: false,
     };
 
     const queryString = new URLSearchParams(params).toString();
@@ -127,11 +119,15 @@ const ReportHistoryApk = () => {
   }, [downloadOptions]);
 
   return (
-    <div className="bg-grey2 h-full text-grey">
+   <div className="bg-grey2 h-full text-grey">
+    {reportToShow && <div>
       <Navbar />
       <div className="w-[90%] md:w-[80%] mx-auto h-full pt-24">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-1">
+           <Link to="/dashboard/project/details">
+           <BiChevronLeft size={30}/>
+           </Link>
             <BsFillFolderFill />
             <p>{currentProject}</p>
           </div>
@@ -144,7 +140,7 @@ const ReportHistoryApk = () => {
                 <BsAndroid2 className=" text-[8px] md:text-lg" color="white" />
               </div>
               <div className="">
-                <p className="font-medium">{scanFile?.file_name}</p>
+                <p className="font-medium">{reportToShow?.FILE_NAME}</p>
               </div>
             </div>
             <div className="flex pl-10 md:pl-0 my-0 md:my-0 items-center gap-x-7 md:flex-row  lg:gap-x-12">
@@ -154,12 +150,12 @@ const ReportHistoryApk = () => {
               </div>
               <div className="">
                 <p className="text-xs">Size</p>
-                <p className="font-medium">{scanFile?.size}</p>
+                <p className="font-medium">{reportToShow?.SIZE}</p>
               </div>
 
               <div className="">
-                <p className="text-xs">Version</p>
-                <p className="font-medium">{scanFile?.version_name}</p>
+                <p className="text-xs">Scan Date</p>
+                <p className="font-medium">{reportToShow?.TIMESTAMP}</p>
               </div>
             </div>
           </div>
@@ -176,7 +172,7 @@ const ReportHistoryApk = () => {
               <option value="executive">Executive Report</option>
             </select>
             <select
-              className="appearance-none text-center cursor-pointer text-[10px]   md:text-sm bg-gold text-white md:py-2   rounded  focus:outline-none focus:bg-gold"
+              className="appearance-none text-center cursor-pointer text-[10px]   md:text-sm bg-gold text-white md:py-2 md:px-3   rounded  focus:outline-none focus:bg-gold"
               id="selectDownloadApkBtn"
               value={sendOptions}
               onChange={(e) => HandleSendEmail(e.target.value, "apk")}
@@ -185,7 +181,7 @@ const ReportHistoryApk = () => {
               <option value="technical">Technical Report</option>
               <option value="executive">Executive Report</option>
             </select>
-            
+
           </div>
         </div>
         <div className="flex  justify-between w-full mt-5  h-full">
@@ -202,7 +198,7 @@ const ReportHistoryApk = () => {
                 <div className="flex items-center gap-1">
                   <div className="bg-red text-white px-2">
                     {
-                      Object.entries(scanFile?.code_analysis).filter(
+                      Object.entries(reportToShow?.CODE_ANALYSIS).filter(
                         ([, obj]) => obj?.metadata.severity === "warning"
                       ).length
                     }
@@ -216,7 +212,7 @@ const ReportHistoryApk = () => {
               </div>
 
               <div className="">
-                {Object.entries(scanFile?.code_analysis).map(([key, obj]) => (
+                {Object?.entries(reportToShow?.CODE_ANALYSIS).map(([key, obj]) => (
                   <div key={key} className="pb-1">
                     <div className="">
                       {obj?.metadata.severity === "warning" && (
@@ -251,7 +247,7 @@ const ReportHistoryApk = () => {
                 <div className="flex items-center gap-1">
                   <div className="bg-gold text-white px-2 mb-2">
                     {
-                      Object.entries(scanFile?.code_analysis).filter(
+                      Object?.entries(reportToShow?.CODE_ANALYSIS).filter(
                         ([, obj]) => obj?.metadata.severity === "info"
                       ).length
                     }
@@ -265,7 +261,7 @@ const ReportHistoryApk = () => {
               </div>
 
               <div className="">
-                {Object.entries(scanFile?.code_analysis).map(([key, obj]) => (
+                {Object?.entries(reportToShow?.CODE_ANALYSIS).map(([key, obj]) => (
                   <div key={key} className="pb-1">
                     <div className="">
                       {obj?.metadata.severity === "info" && (
@@ -300,7 +296,7 @@ const ReportHistoryApk = () => {
                 <div className="flex items-center mb-2 gap-1">
                   <div className="bg-[#26DA09] text-white px-2">
                     {
-                      Object.entries(scanFile?.code_analysis).filter(
+                      Object?.entries(reportToShow?.CODE_ANALYSIS).filter(
                         ([, obj]) => obj?.metadata.severity === "good"
                       ).length
                     }
@@ -314,7 +310,7 @@ const ReportHistoryApk = () => {
               </div>
 
               <div className="">
-                {Object.entries(scanFile?.code_analysis).map(([key, obj]) => (
+                {Object?.entries(reportToShow?.CODE_ANALYSIS).map(([key, obj]) => (
                   <div key={key} className="pb-1">
                     <div className="">
                       {obj?.metadata.severity === "good" && (
@@ -341,41 +337,7 @@ const ReportHistoryApk = () => {
               </div>
             </div>
             <div className={`  w-[80%] ml-6 `}>
-              {/* <div
-                className="  flex justify-between items-center cursor-pointer"
-                onClick={() => setToggleHigh(!toggleHigh)}
-              >
-                <p>Warning</p>
-                {toggleHigh ? <BiSolidChevronDown /> : <BiSolidChevronUp />}
-              </div> */}
 
-              {/* <div className="">
-                {Object.entries(scanFile?.code_analysis).map(([key, obj]) => (
-                  <div key={key} className="py-1">
-                    <div className="">
-                      {obj?.metadata.severity === "high" && (
-                        <div className="">
-                          {toggleHigh && (
-                            <div
-                              className="bg-grey2 p-4 cursor-pointer"
-                              onClick={() => setVulnerility(key)}
-                            >
-                              <p className="text-sm ">{key}</p>
-                              <div className="flex items-center gap-1">
-                                <div className="bg-[#62A03F] w-0.5 h-3"></div>
-                                <p className="text-[12px]">
-                                  Severity : {obj?.metadata?.cvss}
-                                </p>
-                              </div>
-                            </div>
-                          )}
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                ))}
-              </div> */}
-              {/* Manifest Analysis */}
               <p className="mb-8 text-2xl">Manifest Analysis</p>
               <div className="mb-10">
                 <div
@@ -408,7 +370,7 @@ const ReportHistoryApk = () => {
                         <p className="text-sm">Severity</p>
                         <p>
                           {
-                            scanFile?.code_analysis[vulnerability]?.metadata
+                            reportToShow?.CODE_ANALYSIS[vulnerability]?.metadata
                               ?.cvss
                           }
                         </p>
@@ -420,7 +382,7 @@ const ReportHistoryApk = () => {
                         <p className="text-sm">Category</p>
                         <p>
                           {
-                            scanFile?.code_analysis[vulnerability]?.metadata
+                            reportToShow?.CODE_ANALYSIS[vulnerability]?.metadata
                               ?.masvs
                           }
                         </p>
@@ -433,7 +395,7 @@ const ReportHistoryApk = () => {
                     <p className="text-sm">
                       {" "}
                       {
-                        scanFile?.code_analysis[vulnerability]?.metadata
+                        reportToShow?.CODE_ANALYSIS[vulnerability]?.metadata
                           ?.description
                       }
                     </p>
@@ -441,17 +403,17 @@ const ReportHistoryApk = () => {
                     <p className="my-3 text-xl">Bussiness Impact</p>
                     <p className="text-sm">
                       {
-                        scanFile?.code_analysis[vulnerability]?.metadata
+                        reportToShow?.CODE_ANALYSIS[vulnerability]?.metadata
                           ?.business_impact
                       }
                     </p>
                   </div>
                   <div className="mt-4">
                     <p className="text-xl ">Evidence</p>
-                    
+
                     <div></div>
-                    {Object.entries(
-                      scanFile?.code_analysis[vulnerability]?.files
+                    {Object?.entries(
+                      reportToShow?.CODE_ANALYSIS[vulnerability]?.files
                     ).map(([key, obj]) => (
                       <p className="text-sm" key={key}>
                         {key} : {obj}
@@ -460,7 +422,7 @@ const ReportHistoryApk = () => {
                   </div>
                   <p className="text-xl mt-3">Recommendation</p>
                   <p className="text-sm pb-7 my-1">
-                    {scanFile?.code_analysis[vulnerability]?.metadata?.ref}
+                    {reportToShow?.CODE_ANALYSIS[vulnerability]?.metadata?.ref}
                   </p>
                   <p className="text-xl mt-3">Regulatory</p>
                   <div className="flex justify-between">
@@ -468,49 +430,29 @@ const ReportHistoryApk = () => {
                       <div className="">
                         <p className="text-sm">CWE :</p>
                         <p className="text-red text-xs">
-                        {scanFile?.code_analysis[vulnerability]?.metadata?.cwe}
+                        {reportToShow?.CODE_ANALYSIS[vulnerability]?.metadata?.cwe}
                         </p>
-                        
+
                       </div>
                       <div className="">
                         <p className="text-sm">Risk OWASP:</p>
                         <p className="text-red text-xs">
                         {
-                        scanFile?.code_analysis[vulnerability]?.metadata
+                        reportToShow?.CODE_ANALYSIS[vulnerability]?.metadata
                           ?.owasp_mobile
                       }
                         </p>
-                       
+
                       </div>
                       <div className="">
                         <p className="text-sm">Seveirty:</p>
                         <p className="text-red text-xs">
-                        {scanFile?.code_analysis[vulnerability]?.metadata?.severity}
+                        {reportToShow?.CODE_ANALYSIS[vulnerability]?.metadata?.severity}
                         </p>
                       </div>
-                      
+
                     </div>
-                    {/* <div className="">
-                      <div className="">
-                        <p className="text-sm">ioXt:</p>
-                        <p className="text-red text-xs">SI110</p>
-                      </div>
-                      <div className="">
-                        <p className="text-sm">FISMA MED:</p>
-                        <p className="text-red text-xs">
-                          SC-8 TRANSMISSION CONFIDENTIALITY AND INTEGRITY
-                        </p>
-                      </div>
-                      <div className="">
-                        <p className="text-sm">PCI:</p>
-                      </div>
-                      <div className="">
-                        <p className="text-sm"><b>CVSS:</b>  {scanFile?.code_analysis[vulnerability]?.metadata?.cvss}</p>
-                        <p className="text-red text-xs">
-                          2021 CWE Top 25 Most Dangerous Software Errors
-                        </p>
-                      </div>
-                    </div> */}
+
                   </div>
                 </div>
               )}
@@ -518,7 +460,7 @@ const ReportHistoryApk = () => {
                 {vulnerability === "" && machoAnalysis === "high" && (
                   <div>
                     <p className="text-2xl">Manifest Analysis</p>
-                    {scanFile?.manifest_analysis.map(
+                    {reportToShow?.MANIFEST_ANALYSIS.map(
                       (item, i) =>
                         item.stat === "high" && (
                           <div className="text-xs my-4" key={i}>
@@ -536,7 +478,7 @@ const ReportHistoryApk = () => {
                 {vulnerability === "" && machoAnalysis === "warning" && (
                   <div>
                     <p className="text-2xl">Manifest Analysis</p>
-                    {scanFile.manifest_analysis.map(
+                    {reportToShow?.MANIFEST_ANALYSIS.map(
                       (item, i) =>
                         item.stat === "warning" && (
                           <div className="text-xs my-4" key={i}>
@@ -554,7 +496,10 @@ const ReportHistoryApk = () => {
           </div>
         </div>
       </div>
+      </div>}
     </div>
+
+  
   );
 };
 

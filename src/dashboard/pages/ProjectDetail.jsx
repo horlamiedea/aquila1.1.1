@@ -10,7 +10,7 @@ import api from "../../services/api";
 import { useEffect, useState } from "react";
 
 // import UploadScanModal from "../components/modals/UploadScanModal";
-import { SET_REPORT } from "../../redux/slice/appState";
+import { SET_REPORT, SET_REPORT_HISTORY } from "../../redux/slice/appState";
 import { useDispatch, useSelector } from "react-redux";
 
 import "react-toastify/dist/ReactToastify.css";
@@ -64,10 +64,31 @@ const ProjectDetail = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  //Fetching report History
+  useEffect(() => {
+    const params = {
+      project_name,
+      ios: true,
+      // apk: false,
+      limit: 20,
+    };
+    const queryString = new URLSearchParams(params).toString();
+
+    const fetchData = async () => {
+      const apiUrl = `/api/reports/?${queryString}`;
+      try {
+        const response = await api.get(apiUrl);
+        dispatch(SET_REPORT_HISTORY(response.data));
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchData();
+  }, []);
+
   return (
-    <div className="bg-grey2 h-full text-grey ">
+    <div className="bg-grey2 h-full  text-grey ">
       <Navbar />
-      
       {loading ? (
         <div className="h-screen  flex justify-center items-center">
           <i className="fa-solid fa-spinner fa-spin-pulse fa-3x"></i>
@@ -79,8 +100,19 @@ const ProjectDetail = () => {
               <BsFillFolderFill />
               <p>{project_name}</p>
             </div>
+            {/* <div>
+              {
+                !reports?.data?.apk.length > 0 || ! !reports?.data?.ios.length > 0 && <Link
+                to="/dashboard/projects"
+                className="flex gap-1 bg-gold py-1 px-2 rounded-md mb-1 text-white text-sm items-center"
+              >
+                <AiOutlinePlus />
+                <p>{`Upload ${reports?.data?.apk ? "IOS" : "APK"} File`}</p>
+              </Link>
+              }
+            </div> */}
             {!reports?.data.apk.length > 0 ||
-              (!reports?.data.ios.length > 0 && (
+              !reports?.data.ios.length > 0 && (
                 <Link
                   to="/dashboard/projects"
                   className="flex gap-1 bg-gold py-1 px-2 rounded-md mb-1 text-white text-sm items-center"
@@ -88,7 +120,7 @@ const ProjectDetail = () => {
                   <AiOutlinePlus />
                   <p>{`Upload ${reports?.data?.apk ? "IOS" : "APK"} File`}</p>
                 </Link>
-              ))}
+              )}
           </div>
           {/* Apk */}
           {reports?.data.apk.length > 0 && <ApkCard />}

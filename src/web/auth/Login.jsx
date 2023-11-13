@@ -20,6 +20,7 @@ const Login = () => {
   const navigate = useNavigate();
   const disPatch = useDispatch();
 
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSubmitted(true);
@@ -49,6 +50,8 @@ const Login = () => {
       toast.error("Network Error");
     }
   };
+
+  
   return (
     <div className="flex relative  w-full justify-center items-center h-screen bg-grey2 text-grey ">
       <div className=" bg-white w-full z-10 shadow-lg md:w-[80%] h-auto py-8 md:rounded-md ">

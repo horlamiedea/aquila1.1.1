@@ -10,9 +10,13 @@ import 'animate.css'
 
 import { Provider } from "react-redux";
 
+
+
+
 const queryClient = new QueryClient();
 
 ReactDOM.createRoot(document.getElementById("root")).render(
+  
   <Provider store={store}>
     <React.StrictMode>
       <QueryClientProvider client={queryClient}>

@@ -7,8 +7,10 @@ import { useEffect, useState } from "react";
 import { BiSolidChevronDown } from "react-icons/bi";
 import { toast } from "react-toastify";
 
+
 import { Link } from "react-router-dom";
 import axios from "axios";
+import baseURL from "../../services/baseUrl";
 
 // const COMPANY_REGEX = /^[A-Za-z0-9 ]*$/;
 const COMPANY_REGEX =/^[a-zA-Z0-9 ]{1,}$/;
@@ -156,7 +158,7 @@ const Signup = () => {
 
       setIsLoading(true);
       setStoredEmail(email)
-      await axios.post("https://aquilatest.livelysea-9b4d3851.westus2.azurecontainerapps.io/auth/register/", {
+      await axios.post(`${baseURL}/auth/register/`, {
         first_name: firstName,
         last_name: lastName,
         username,

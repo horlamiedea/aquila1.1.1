@@ -32,6 +32,9 @@ import CusRepLogin from "./web/Chat/admin/CusRepLogin";
 import { ADD_CUSTOMER_REP } from "./redux/slice/chat";
 import UpdateProfile from "./web/auth/UpdatedProfile";
 import ReportHistoryApk from "./dashboard/pages/ReportHistoryApk";
+import ReportHistoryIos from "./dashboard/pages/ReportHistoryIos";
+import AutoLogout from "./web/auth/AutoLogout";
+import Inactivity from "./web/auth/Inactivity";
 
 
 
@@ -66,6 +69,7 @@ function App() {
   return (
     <>
       <Router>
+        <AutoLogout/>
       {!cookies.cookieConsent && <CookieConsent />}
         <Routes>
           <Route path="/" element={<Home />} />
@@ -79,6 +83,7 @@ function App() {
           <Route path="/forget-password" element={<ForgetPassword />} />
           <Route path="/password-reset" element={<PasswordReset />} />
           <Route path="/cookies-policy" element={<CookiesPolicy />} />
+          <Route path="/inactivity" element={<Inactivity />} />
 
           <Route path="/user-guide" element={<UserGuide />} />
           <Route path="/admin-login" element={<CusRepLogin />} />
@@ -109,6 +114,10 @@ function App() {
             <Route
               path="/dashboard/project/report/report-history"
               element={<ReportHistoryApk />}
+            />
+             <Route
+              path="/dashboard/project/report/report-history-ios"
+              element={<ReportHistoryIos />}
             />
             <Route />
           </Route>

@@ -30,10 +30,10 @@ const DashboardHome = () => {
   }, []);
 
   return (
-    <div className="bg-grey2 text-grey">
+    <div className="bg-grey2 h-full   text-grey">
       {openModal && <NewProjectModal />}
       <Navbar />
-      <div className="w-[90%]  md:w-[80%] h-screen mx-auto pt-28">
+      <div className="w-[90%] h-screen  md:w-[80%]   mx-auto pt-28">
         <div className="shadow-md bg-white w-full h-[15rem] rounded-md flex justify-between items-center overflow-hidden ">
           {!projects ? (
             <div className="pl-10">
@@ -58,7 +58,7 @@ const DashboardHome = () => {
               </p>
               <button
                 onClick={() => disPatch(TOGGLE_OPENMODAL())}
-                className="bg-gold text-white px-4 py-1 mt-3 rounded-md"
+                className="bg-red text-white px-4 py-1 mt-3 rounded-md"
               >
                 New Project
               </button>
@@ -72,14 +72,14 @@ const DashboardHome = () => {
           <AiOutlineAppstoreAdd />
           <span>Project Logs</span>
         </div>
-        <div className="shadow-lg bg-white w-full h-min-[10rem] py-3 rounded-md flex  justify-center  ">
+        <div className="shadow-lg bg-white w-full min-h-[10rem]   py-3 rounded-md flex mb-10 justify-center  ">
           {!projects || projects.length === 0 &&
             <div className="flex flex-col justify-center mx-auto items-center">
               <AiFillFolderAdd size={40} />
               <p className="text-sm">Oops! No Project found</p>
             </div>}
           { projects &&
-            <div className="flex py-10 justify-center items-center   ">
+            <div className="flex py-10  justify-center items-center   ">
               <Projects />
             </div>}
           

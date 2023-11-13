@@ -36,6 +36,7 @@ const ProtectCom = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [featuresLoading, setFeaturesLoading] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [protectData,setProtectData] = useState("")
   const { currentProject } = useSelector((state) => state.appState);
   const { token } = useSelector((state) => state.auth);
   const [params, setParams] = useState({
@@ -48,6 +49,8 @@ const ProtectCom = () => {
   const key_alias = "key_alias";
   const key_password = "key_password";
   const protect_apk_aab = "APK";
+
+
 
   useEffect(() => {
     const fetchprotectFeatures = async () => {
@@ -253,36 +256,30 @@ const ProtectCom = () => {
     try {
 
       const newSocket = new WebSocket(url);
-      toast.info("Aquila is protected your app")
+      toast.info("Aquila is protecting your app")
       setIsLoading(true);
       setSuccess(false);
 
-      newSocket.onopen = () => {
-        console.log("WebSocket connection opened");
-
+      newSocket.onopen = () => {     
         newSocket.send(JSON.stringify(params))
       };
 
-      newSocket.onmessage = (event) => {
-        console.log("WebSocket message received", event);
-        // setSuccess(true);
+      newSocket.onmessage = (event) => {       
 
         const data = JSON.parse(event.data);
-        console.log(data.data, "protect event object");
+        if(data?.data?.id){
+          setProtectData(data.data.protected_app)
+          setSuccess(true)
+        }
       };
-
       newSocket.onerror = (event) => {
         console.error("WebSocket error occurred", event);
         setIsLoading(false);
         console.log(newSocket.readyState, "on-error");
       };
 
-      newSocket.onclose = (event) => {
-        console.log(newSocket.readyState, "on-close");
-        console.log(newSocket.reason);
-        console.log(newSocket.code);
+      newSocket.onclose = (event) => {     
         setIsLoading(false);
-        // setSuccess(true);
         console.log("WebSocket connection closed", event);
       };
     } catch (error) {
@@ -300,7 +297,6 @@ const ProtectCom = () => {
     }
 
     return () => {
-      // Cleanup function: Ensure body overflow is set to default when component unmounts
       document.body.classList.remove("overflow-hidden");
     };
   }, [success]);
@@ -682,16 +678,16 @@ const ProtectCom = () => {
           )}
         </button>
 
-        {success && !featuresLoading && (
+        {success && (
           <div className="fixed top-0 left-0 w-full h-full bg-black shadow-lg shadow-neutral-500/50 flex justify-center items-center backdrop-filter backdrop-blur-sm bg-opacity-50 z-999">
           <div className="bg-white w-[90%] md:w-[55%] h-[13rem] flex items-center pl-12 justify-center rounded-md relative">
               <AiOutlineClose className="absolute top-3 right-3 cursor-pointer" onClick={() => setSuccess(false)} />
               <div className="flex flex-col justify-center items-center  ">
 
-              <i className="fa-regular fa-circle-check text-gold text-6xl mb-5 "></i>
+              <i className="fa-regular fa-circle-check text-[#44CC11] text-6xl mb-5 "></i>
               <p>Your app have been protected</p>
               
-              <a href="https://aquila.blob.core.windows.net/media/apps/protected/ugochukwu.mengwa%40ethnos.com.ng/xxx/Facebook_Lite_326.0.0.16.97_Apkpure_protected.apk" rel="noreferrer" target="_blank" download>
+              <a href={protectData} rel="noreferrer" target="_blank" download>
         Click <span className="text-gold">Here</span> to download
       </a>
             </div>
