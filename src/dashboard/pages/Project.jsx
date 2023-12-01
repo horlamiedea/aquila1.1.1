@@ -171,7 +171,7 @@ const Project = () => {
               <p>Drag and drop</p>
               <p>or</p>
               <button
-                className="bg-gold text-white px-6 py-2 rounded-lg cursor-pointer"
+                className="bg-red text-white px-6 py-2 rounded-lg cursor-pointer"
                 onClick={handleButtonClick}
               >
                 Upload

@@ -15,7 +15,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import "react-toastify/dist/ReactToastify.css";
 
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import ScanCom from "../components/dashboardhome/ScanCom";
 import MonitorCom from "../components/dashboardhome/MonitorCom";
 import ProtectCom from "../components/dashboardhome/ProtectCom";
@@ -36,6 +36,7 @@ const ProjectDetail = () => {
     (state) => state.appState
   );
   const dispatch = useDispatch();
+  const navigate = useNavigate()
 
   const HandleTab = (tab, index) => {
     setActiveTab(index);
@@ -43,6 +44,7 @@ const ProjectDetail = () => {
   };
 
   useEffect(() => {
+    console.log("ProjectDetail component mounted or updated");
     const fetchReport = async () => {
       try {
         setLoading(true);
@@ -62,7 +64,7 @@ const ProjectDetail = () => {
     fetchReport();
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [project_name]);
 
   //Fetching report History
   useEffect(() => {
@@ -84,7 +86,7 @@ const ProjectDetail = () => {
       }
     };
     fetchData();
-  }, []);
+  }, [project_name, dispatch]);
 
   return (
     <div className="bg-grey2 h-full  text-grey ">
@@ -111,16 +113,17 @@ const ProjectDetail = () => {
               </Link>
               }
             </div> */}
-            {!reports?.data.apk.length > 0 ||
-              !reports?.data.ios.length > 0 && (
-                <Link
-                  to="/dashboard/projects"
-                  className="flex gap-1 bg-gold py-1 px-2 rounded-md mb-1 text-white text-sm items-center"
+            {reports?.data?.apk.length === 0 ||
+              reports?.data?.ios.length === 0 ? (
+                <button
+                  onClick={() => navigate("/dashboard/projects")}
+                 
+                  className="flex gap-1 text-xs bg-red p-1 md:p-2 rounded-md mb-1 text-white md:text-sm items-center"
                 >
                   <AiOutlinePlus />
-                  <p>{`Upload ${reports?.data?.apk ? "IOS" : "APK"} File`}</p>
-                </Link>
-              )}
+                  <p>{`Upload ${reports?.data?.apk.length === 0  ? "APK" : "IOS"} File`}</p>
+                </button>
+              ): null}
           </div>
           {/* Apk */}
           {reports?.data.apk.length > 0 && <ApkCard />}

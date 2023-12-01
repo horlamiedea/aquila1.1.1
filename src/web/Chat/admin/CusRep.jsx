@@ -224,7 +224,7 @@ const CusRep = () => {
   };
 
   return (
-    <div className="bg-grey2 text-grey">
+    <div className="bg-grey2 text-grey ">
       <div className="relative">
         <div className="fixed bg-white w-full h-16 shadow-md z-20 ">
           <div className="flex items-center justify-between w-[80%] mx-auto mt-3 ">
@@ -253,7 +253,7 @@ const CusRep = () => {
           </div>
         </div>
       </div>
-      <div className=" flex w-[90%] gap-2 mx-auto h-screen pt-24">
+      <div className=" flex w-[90%] gap-2 mx-auto h-screen pt-24 ">
         <div className="shadow-md bg-white w-[25%] h-[95%] overflow-auto">
           <div className="mx-5 mt-10 ">
             <p className="font-semibold text-2xl">
@@ -281,7 +281,7 @@ const CusRep = () => {
         </div>
         <div className=" relative shadow-md bg-white w-[80%] h-[95%]">
           <div className="flex flex-col  ">
-            <div className="bg-white absolute rounded-md h-[80%]  mx-8 top-5 w-[90%]">
+            <div className="bg-white absolute rounded-md h-[70%]  mx-8 top-5 w-[90%] overflow-y-scroll no-scrollbar">
               {chatMessages &&
                 chatMessages
                   .filter((message) => message.group === activeChat)

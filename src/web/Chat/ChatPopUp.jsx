@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { BsChevronLeft, BsFillChatFill } from "react-icons/bs";
 import { Link } from "react-router-dom";
 import Chat from "./Chat";
@@ -17,6 +17,8 @@ function ChatPopUp() {
   const [fullName, setFullName] = useState("");
   const user = JSON.parse(localStorage.getItem("user"));
   const dispatch = useDispatch();
+  const modalRef = useRef(null);
+
 
   // Creating an Id token for anonimoius user
   const handleSubmit = async (e) => {
@@ -43,10 +45,26 @@ function ChatPopUp() {
     }
   };
 
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (modalRef.current && !modalRef.current.contains(event.target)) {
+        setPopup(false);
+      }
+    };
+  
+    // Attach the listener
+    document.addEventListener("mousedown", handleClickOutside);
+  
+    return () => {
+      // Clean up the listener
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [modalRef]);
+
   return (
     <div>
       <div
-        onClick={() => setPopup(!popup)}
+        onClick={() => setPopup(!popup)} ref={modalRef}
         className="fixed right-8 bottom-4 cursor-pointer rounded-full w-12 h-12 z-10 bg-red"
       >
         <BsFillChatFill

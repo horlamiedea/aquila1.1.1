@@ -9,6 +9,7 @@ import baseURL from "../../../services/baseUrl";
 import { AiOutlineClose } from "react-icons/ai";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import ProtectFeatureInfo from "../ProtectFeaturesInfo";
 
 const ProtectCom = () => {
   const [totalCodeObfuscation, setTotalCodeObfuscation] = useState(false);
@@ -36,7 +37,7 @@ const ProtectCom = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [featuresLoading, setFeaturesLoading] = useState(false);
   const [success, setSuccess] = useState(false);
-  const [protectData,setProtectData] = useState("")
+  const [protectData, setProtectData] = useState("");
   const { currentProject } = useSelector((state) => state.appState);
   const { token } = useSelector((state) => state.auth);
   const [params, setParams] = useState({
@@ -49,8 +50,6 @@ const ProtectCom = () => {
   const key_alias = "key_alias";
   const key_password = "key_password";
   const protect_apk_aab = "APK";
-
-
 
   useEffect(() => {
     const fetchprotectFeatures = async () => {
@@ -254,22 +253,20 @@ const ProtectCom = () => {
     const url = `${socketUrl}/protect/`;
 
     try {
-
       const newSocket = new WebSocket(url);
-      toast.info("Aquila is protecting your app")
+      toast.info("Aquila is protecting your app");
       setIsLoading(true);
       setSuccess(false);
 
-      newSocket.onopen = () => {     
-        newSocket.send(JSON.stringify(params))
+      newSocket.onopen = () => {
+        newSocket.send(JSON.stringify(params));
       };
 
-      newSocket.onmessage = (event) => {       
-
+      newSocket.onmessage = (event) => {
         const data = JSON.parse(event.data);
-        if(data?.data?.id){
-          setProtectData(data.data.protected_app)
-          setSuccess(true)
+        if (data?.data?.id) {
+          setProtectData(data.data.protected_app);
+          setSuccess(true);
         }
       };
       newSocket.onerror = (event) => {
@@ -278,7 +275,7 @@ const ProtectCom = () => {
         console.log(newSocket.readyState, "on-error");
       };
 
-      newSocket.onclose = (event) => {     
+      newSocket.onclose = (event) => {
         setIsLoading(false);
         console.log("WebSocket connection closed", event);
       };
@@ -287,7 +284,6 @@ const ProtectCom = () => {
       console.error("Error connecting to WebSocket", error);
     }
   };
-
 
   useEffect(() => {
     if (success) {
@@ -311,7 +307,7 @@ const ProtectCom = () => {
       >
         <div className="w-[90%] md:w-[80%] text-[12px] h-full flex flex-col md:text-[16px]">
           <div className="w-full bg-grey2 h-[70%] mt-7  rounded-xl">
-            <div className="w-[90%]  flex flex-col mx-auto">
+            <div className="w-[90%]  flex flex-col mx-auto ">
               <div className="flex justify-between items-center mb-5 mt-4">
                 <div className="flex gap-2 items-center">
                   <FiMinusCircle />
@@ -332,15 +328,17 @@ const ProtectCom = () => {
               </div>
               <hr />
               <div className=" mt-4 ">
-                <div className="flex gap-24 my-2  items-center">
+                <div className="flex justify-between my-3 items-center">
                   <div className="">
-                    <p>Obfuscte</p>
-                    <p>Assesr String Encryption </p>
+                    <p>Obfuscate App Logic</p>
+                    <p>Encrypt Strings </p>
                     <p>Obfuscation Services</p>
                   </div>
-                  <div className="flex flex-col items-center gap-4 md:gap-2">
+                  <div className="flex flex-col items-center gap-0 md:gap-2">
                     <div className="flex items-center gap-2">
-                      <LuInfo size={15} />
+                      <ProtectFeatureInfo content="Uses code obfuscation for enhanced security against tampering and unauthorized access.">
+                        <LuInfo size={15} />
+                      </ProtectFeatureInfo>
                       <div onClick={() => setObfuscate(!obfuscate)}>
                         {obfuscate ? (
                           <PiToggleRightFill size={20} color="red" />
@@ -350,7 +348,9 @@ const ProtectCom = () => {
                       </div>
                     </div>
                     <div className="flex items-center gap-2">
-                      <LuInfo size={15} />
+                      <ProtectFeatureInfo content="Secures sensitive text data to prevent unauthorized access.">
+                        <LuInfo size={15} />
+                      </ProtectFeatureInfo>
                       <div
                         onClick={() =>
                           setAssestStringEcryption(!assestStringEcryption)
@@ -364,7 +364,9 @@ const ProtectCom = () => {
                       </div>
                     </div>
                     <div className="flex items-center gap-2">
-                      <LuInfo size={15} />
+                      <ProtectFeatureInfo content="Enhances protection by disguising code and data structures.">
+                        <LuInfo size={15} />
+                      </ProtectFeatureInfo>
                       <div
                         onClick={() => setObfuscateServices(!obfuscateServices)}
                       >
@@ -403,13 +405,15 @@ const ProtectCom = () => {
               </div>
               <hr />
               <div className=" mt-4 ">
-                <div className="flex gap-36 md:gap-48 my-2 items-center">
+                <div className="flex justify-between my-3 items-center">
                   <div className="">
                     <p>Sign App</p>
                   </div>
-                  <div className="flex flex-col items-center gap-2">
+                  <div className="flex flex-col items-center gap-0 md:gap-2">
                     <div className="flex items-center gap-2">
-                      <LuInfo size={15} />
+                      <ProtectFeatureInfo content="Authenticates the source and ensures integrity of the application.">
+                        <LuInfo size={15} />
+                      </ProtectFeatureInfo>
                       <div onClick={() => setShouldSign(!shouldSign)}>
                         {shouldSign ? (
                           <PiToggleRightFill size={20} color="red" />
@@ -446,17 +450,19 @@ const ProtectCom = () => {
               </div>
               <hr />
               <div className=" mt-4 ">
-                <div className="flex gap-24 my-2 items-center">
+                <div className="flex justify-between my-3 items-center">
                   <div className="">
-                    <p>Prevent Rooting</p>
-                    <p>Prevent Developer Mode</p>
-                    <p>Prevent Unknown Resources</p>
-                    <p>Enforce TLs</p>
-                    <p>Prevent Emulator</p>
+                    <p>Root Detection</p>
+                    <p>Detect Developer Options</p>
+                    <p>Detect Unknown Sources</p>
+                    <p>Enforce TLS</p>
+                    <p>Prevent Running on Emulators</p>
                   </div>
-                  <div className="flex flex-col items-center gap-2">
+                  <div className="flex flex-col items-center gap-0 md:gap-2">
                     <div className="flex items-center gap-2">
-                      <LuInfo size={15} />
+                      <ProtectFeatureInfo content="Safeguards against risks associated with rooted devices.">
+                        <LuInfo size={15} />
+                      </ProtectFeatureInfo>
                       <div onClick={() => setPreventRoot(!preventRoot)}>
                         {preventRoot ? (
                           <PiToggleRightFill size={20} color="red" />
@@ -466,7 +472,9 @@ const ProtectCom = () => {
                       </div>
                     </div>
                     <div className="flex items-center gap-2">
-                      <LuInfo size={15} />
+                      <ProtectFeatureInfo content="Ensures app security by detecting advanced system settings.">
+                        <LuInfo size={15} />
+                      </ProtectFeatureInfo>
                       <div
                         onClick={() =>
                           setPreventDeveloperMode(!preventDeveloperMode)
@@ -480,7 +488,9 @@ const ProtectCom = () => {
                       </div>
                     </div>
                     <div className="flex items-center gap-2">
-                      <LuInfo size={15} />
+                      <ProtectFeatureInfo content="Guards against installations from unverified sources.">
+                        <LuInfo size={15} />
+                      </ProtectFeatureInfo>
                       <div
                         onClick={() =>
                           setPreventUnknownResources(!preventUnknownResources)
@@ -494,7 +504,9 @@ const ProtectCom = () => {
                       </div>
                     </div>
                     <div className="flex items-center gap-2">
-                      <LuInfo size={15} />
+                      <ProtectFeatureInfo content="Secures data transmission with robust encryption protocols.">
+                        <LuInfo size={15} />
+                      </ProtectFeatureInfo>
                       <div onClick={() => setEnforceTls(!enforceTls)}>
                         {enforceTls ? (
                           <PiToggleRightFill size={20} color="red" />
@@ -504,7 +516,9 @@ const ProtectCom = () => {
                       </div>
                     </div>
                     <div className="flex items-center gap-2">
-                      <LuInfo size={15} />
+                      <ProtectFeatureInfo content="Prevents execution on simulated environments such as emulators for enhanced security.">
+                        <LuInfo size={15} />
+                      </ProtectFeatureInfo>
                       <div onClick={() => setPreventEmulator(!preventEmulator)}>
                         {preventEmulator ? (
                           <PiToggleRightFill size={20} color="red" />
@@ -541,15 +555,17 @@ const ProtectCom = () => {
               </div>
               <hr />
               <div className=" mt-4 ">
-                <div className="flex gap-24 my-2 items-center">
+                <div className="flex justify-between my-3 items-center">
                   <div className="">
-                    <p>Prevent Screen Shot</p>
+                    <p>Prevent ScreenShot</p>
                     <p>Check Selinux</p>
-                    <p>Prevent Copyand Paste</p>
+                    <p>Copy/Paste Prevention</p>
                   </div>
-                  <div className="flex flex-col items-center gap-2">
+                  <div className="flex flex-col items-center gap-0 md:gap-2">
                     <div className="flex items-center gap-2">
-                      <LuInfo size={15} />
+                      <ProtectFeatureInfo content="Disables capture to protect sensitive information on-screen.">
+                        <LuInfo size={15} />
+                      </ProtectFeatureInfo>
                       <div
                         onClick={() => setPreventScreenShot(!preventScreenShot)}
                       >
@@ -561,7 +577,9 @@ const ProtectCom = () => {
                       </div>
                     </div>
                     <div className="flex items-center gap-2">
-                      <LuInfo size={15} />
+                      <ProtectFeatureInfo content="SELinux Check Verifies system security settings for enhanced app protection.">
+                        <LuInfo size={15} />
+                      </ProtectFeatureInfo>
                       <div onClick={() => setCheckSelinux(!checkSelinux)}>
                         {checkSelinux ? (
                           <PiToggleRightFill size={20} color="red" />
@@ -571,7 +589,9 @@ const ProtectCom = () => {
                       </div>
                     </div>
                     <div className="flex items-center gap-2">
-                      <LuInfo size={15} />
+                      <ProtectFeatureInfo content="Prevents data leakage by disabling text duplication functions.">
+                        <LuInfo size={15} />
+                      </ProtectFeatureInfo>
                       <div
                         onClick={() => setPreventCopyPaste(!preventCopyPaste)}
                       >
@@ -610,16 +630,18 @@ const ProtectCom = () => {
               </div>
               <hr />
               <div className=" mt-4 ">
-                <div className="flex gap-24 my-2 items-center">
+                <div className="flex justify-between my-3 items-center">
                   <div className="">
                     <p>Debug Removal</p>
                     <p>Prevent Debugger</p>
                     <p>Flow Relocation</p>
-                    <p>Protect Apk</p>
+                    {/* <p>Protect Apk</p> */}
                   </div>
-                  <div className="flex flex-col items-center gap-2">
+                  <div className="flex flex-col items-center gap-0 md:gap-2">
                     <div className="flex items-center gap-2">
-                      <LuInfo size={15} />
+                      <ProtectFeatureInfo content="Eliminates debugging traces for tighter security.">
+                        <LuInfo size={15} />
+                      </ProtectFeatureInfo>
                       <div onClick={() => setDebugRemoval(!debugRemoval)}>
                         {debugRemoval ? (
                           <PiToggleRightFill size={20} color="red" />
@@ -629,7 +651,9 @@ const ProtectCom = () => {
                       </div>
                     </div>
                     <div className="flex items-center gap-2">
-                      <LuInfo size={15} />
+                      <ProtectFeatureInfo content=" Blocks external debugging attempts to safeguard the app.">
+                        <LuInfo size={15} />
+                      </ProtectFeatureInfo>
                       <div
                         onClick={() => setPreventDebuggers(!preventDebuggers)}
                       >
@@ -641,7 +665,9 @@ const ProtectCom = () => {
                       </div>
                     </div>
                     <div className="flex items-center gap-2">
-                      <LuInfo size={15} />
+                      <ProtectFeatureInfo content="Dynamically alters code execution paths for increased security.">
+                        <LuInfo size={15} />
+                      </ProtectFeatureInfo>
                       <div onClick={() => setFlowRelocation(!flowRelocation)}>
                         {flowRelocation ? (
                           <PiToggleRightFill size={20} color="red" />
@@ -650,7 +676,7 @@ const ProtectCom = () => {
                         )}
                       </div>
                     </div>
-                    <div className="flex items-center gap-2">
+                    {/* <div className="flex items-center gap-2">
                       <LuInfo size={15} />
                       <div onClick={() => setProtectApkAbb(!protectApkAbb)}>
                         {protectApkAbb ? (
@@ -659,7 +685,7 @@ const ProtectCom = () => {
                           <PiToggleLeftFill size={20} />
                         )}
                       </div>
-                    </div>
+                    </div> */}
                   </div>
                 </div>
               </div>
@@ -670,7 +696,7 @@ const ProtectCom = () => {
         <button
           disabled={isLoading}
           onClick={handleProtect}
-          className="bg-gold text-white mb-5 px-6 rounded-md py-3"
+          className="bg-red text-white mb-5 py-2 px-4  rounded-md md:py-3 md:px-6"
         >
           Protect
           {isLoading && (
@@ -680,21 +706,21 @@ const ProtectCom = () => {
 
         {success && (
           <div className="fixed top-0 left-0 w-full h-full bg-black shadow-lg shadow-neutral-500/50 flex justify-center items-center backdrop-filter backdrop-blur-sm bg-opacity-50 z-999">
-          <div className="bg-white w-[90%] md:w-[55%] h-[13rem] flex items-center pl-12 justify-center rounded-md relative">
-              <AiOutlineClose className="absolute top-3 right-3 cursor-pointer" onClick={() => setSuccess(false)} />
+            <div className="bg-white w-[90%] md:w-[55%] h-[13rem] flex items-center pl-12 justify-center rounded-md relative">
+              <AiOutlineClose
+                className="absolute top-3 right-3 cursor-pointer"
+                onClick={() => setSuccess(false)}
+              />
               <div className="flex flex-col justify-center items-center  ">
+                <i className="fa-regular fa-circle-check text-[#44CC11] text-6xl mb-5 "></i>
+                <p>Your app have been protected</p>
 
-              <i className="fa-regular fa-circle-check text-[#44CC11] text-6xl mb-5 "></i>
-              <p>Your app have been protected</p>
-              
-              <a href={protectData} rel="noreferrer" target="_blank" download>
-        Click <span className="text-gold">Here</span> to download
-      </a>
+                <a href={protectData} rel="noreferrer" target="_blank" download>
+                  Click <span className="text-gold">Here</span> to download
+                </a>
+              </div>
             </div>
           </div>
-      </div>
-      
-          
         )}
       </div>
     </div>

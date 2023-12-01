@@ -23,4 +23,33 @@ Accordion > li {
   animation: flicker 1s infinite;
 }
 
+/* Hide Scrollbar */
+@layer utilities {
+  @variants responsive {
+    /* Hide scrollbar for Chrome, Safari and Opera */
+    .no-scrollbar::-webkit-scrollbar {
+        display: none;
+    }
 
+    /* Hide scrollbar for IE, Edge and Firefox */
+    .no-scrollbar {
+        -ms-overflow-style: none;  /* IE and Edge */
+        scrollbar-width: none;  /* Firefox */
+    }
+  }
+}
+
+
+/* Create tooltip arrow */
+.tooltip-box::after {
+  content: '';
+  position: absolute;
+  top:100%;/* Position the arrow at the bottom of the tooltip */
+
+  left:50%;
+  transform: translateX(-50%); /* Center the arrow */
+  border-width: 5px;
+  border-style: solid;
+  border-color: #fff transparent transparent transparent; /* The arrow color */
+  z-index: 100;
+}

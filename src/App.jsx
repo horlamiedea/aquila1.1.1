@@ -34,8 +34,7 @@ import UpdateProfile from "./web/auth/UpdatedProfile";
 import ReportHistoryApk from "./dashboard/pages/ReportHistoryApk";
 import ReportHistoryIos from "./dashboard/pages/ReportHistoryIos";
 import AutoLogout from "./web/auth/AutoLogout";
-import Inactivity from "./web/auth/Inactivity";
-
+import NetworkStatus from "./dashboard/components/NetworkStatus";
 
 
 
@@ -68,6 +67,7 @@ function App() {
 
   return (
     <>
+      {/* <NetworkStatus /> */}
       <Router>
         <AutoLogout/>
       {!cookies.cookieConsent && <CookieConsent />}
@@ -83,7 +83,6 @@ function App() {
           <Route path="/forget-password" element={<ForgetPassword />} />
           <Route path="/password-reset" element={<PasswordReset />} />
           <Route path="/cookies-policy" element={<CookiesPolicy />} />
-          <Route path="/inactivity" element={<Inactivity />} />
 
           <Route path="/user-guide" element={<UserGuide />} />
           <Route path="/admin-login" element={<CusRepLogin />} />

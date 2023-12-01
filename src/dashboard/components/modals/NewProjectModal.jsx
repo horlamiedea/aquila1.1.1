@@ -17,6 +17,11 @@ const NewProjectModal = () => {
   const disPatch = useDispatch();
   const navigate = useNavigate();
 
+
+
+
+
+
   const createProject = async (e) => {
     e.preventDefault();
     if (!name) {
@@ -46,7 +51,7 @@ const NewProjectModal = () => {
     <div className="bg-black shadow-lg shadow-neutral-500/50 z-10 h-full absolute  w-full flex justify-center items-center backdrop-filter backdrop-blur-sm bg-opacity-50">
       <div className="bg-white w-[90%] md:w-[40%] h-[15rem] flex items-center pl-12 rounded-md relative ">
         <AiOutlineClose
-          onClick={() => disPatch(TOGGLE_OPENMODAL())}
+          onClick={() => disPatch(TOGGLE_OPENMODAL())} 
           className="absolute top-3 right-3 cursor-pointer"
         />
         <div className="">

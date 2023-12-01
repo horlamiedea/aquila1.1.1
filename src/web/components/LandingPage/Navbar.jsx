@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import Logo from "../../../assets/Aquila-Logo 1.png";
 import "../../../App.css";
 
@@ -11,6 +11,25 @@ const Navbar = () => {
   const [isOpen2, setIsOpen2] = useState(false);
   const [services, setServices] = useState(false);
 
+  const modalRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (modalRef.current && !modalRef.current.contains(event.target)) {
+        setServices(false);
+      }
+    };
+  
+    // Attach the listener
+    document.addEventListener("mousedown", handleClickOutside);
+  
+    return () => {
+      // Clean up the listener
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [modalRef]);
+
+
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
@@ -21,9 +40,7 @@ const Navbar = () => {
 
   return (
     <nav className="bg-white shadow-lg md:px-4 lg:px-12 fixed z-40 w-full font-inter  ">
-     
       <div className="container mx-auto flex justify-between items-center ">
-    
         <div className="w-full flex justify-between items-center space-x-4">
           <div>
             <Link to="/">
@@ -52,72 +69,70 @@ const Navbar = () => {
         </div>
 
         <div className="md:w-[100rem] lg:w-[100rem] xl:w-[200rem] md:flex">
-        <div className="hidden md:flex space-x-10 flex-grow justify-center text-base font-medium items-center text-grey">
-          <div
-            onClick={() => setServices(!services)}
-            className=" cursor-pointer flex gap-x-2 items-center relative"
-          >
-            <p className="text-grey font-semibold">Services</p>
-            <FiChevronDown color="red" />
-            {services && (
-          <div className="absolute rounded-lg flex flex-col overflow-hidden drop-shadow-md w-40 bg-white h-auto top-14 z-50">
-            <Link
-              to="/scan"
-              className="py-3  text-grey hover:bg-grey2 px-4 font-medium  cursor-pointer"
+          <div className="hidden md:flex space-x-10 flex-grow justify-center text-base font-medium items-center text-grey">
+            <div
+              onClick={() => setServices(!services)} ref={modalRef}
+                
+              className=" cursor-pointer flex gap-x-2 items-center relative"
             >
-              Scan
+              <p className="text-grey font-semibold">Services</p>
+              <FiChevronDown color="red" />
+              {services && (
+                <div className="absolute rounded-lg flex flex-col overflow-hidden drop-shadow-md w-40 bg-white h-auto top-14 z-50">
+                  <Link
+                    to="/scan"
+                    className="py-3  text-grey hover:bg-grey2 px-4 font-medium  cursor-pointer"
+                  >
+                    Scan
+                  </Link>
+                  <Link
+                    to="/protect"
+                    className="py-3  text-grey hover:bg-grey2 px-4 font-medium  cursor-pointer"
+                  >
+                    Protect
+                  </Link>
+                  <Link
+                    to="/monitor"
+                    className="py-3  text-grey hover:bg-grey2 px-4 font-medium  cursor-pointer"
+                  >
+                    Monitor
+                  </Link>
+                </div>
+              )}
+            </div>
+
+            <Link
+              to="#"
+              className="hover:underline hover:underline-offset-8 hover:decoration-red hover:decoration-4 font-semibold text-grey "
+            >
+              Contact
             </Link>
             <Link
-              to="/protect"
-              className="py-3  text-grey hover:bg-grey2 px-4 font-medium  cursor-pointer"
+              to="#"
+              className="hover:underline hover:underline-offset-8 hover:decoration-red hover:decoration-4 font-semibold text-grey  "
             >
-              Protect
-            </Link>
-            <Link
-              to="/monitor"
-              className="py-3  text-grey hover:bg-grey2 px-4 font-medium  cursor-pointer"
-            >
-              Monitor
+              Blog
             </Link>
           </div>
-        )}
+
+          <div className="hidden md:flex space-x-4">
+            <Link
+              to="/login"
+              className="bg-red text-white font-semibold py-2 px-4 rounded-lg cursor-pointer"
+            >
+              Sign In
+            </Link>
+
+            <Link
+              to="/signup"
+              className="text-grey border-2 border-red font-semibold py-2 px-4 rounded-lg cursor-pointer"
+            >
+              Free Trial
+            </Link>
           </div>
-
-          <Link
-            to="#"
-            className="hover:underline hover:underline-offset-8 hover:decoration-red hover:decoration-4 font-semibold text-grey "
-          >
-            Contact
-          </Link>
-          <Link
-            to="#"
-            className="hover:underline hover:underline-offset-8 hover:decoration-red hover:decoration-4 font-semibold text-grey  "
-          >
-            Blog
-          </Link>
         </div>
+        {/* small scrren */}
 
-
-
-        <div className="hidden md:flex space-x-4">
-          <Link
-            to="/login"
-            className="bg-red text-white font-semibold py-2 px-4 rounded-lg cursor-pointer"
-          >
-            Sign In
-          </Link>
-
-          <Link
-            to="/signup"
-            className="text-grey border-2 border-red font-semibold py-2 px-4 rounded-lg cursor-pointer"
-          >
-            Free Trial
-          </Link>
-        </div>
-       
-        </div>
-      {/* small scrren */}
-        
         <div
           className={`md:hidden absolute top-[4.5rem] right-0 bg-grey
            w-full py-4 text-grey h-screen  ${
@@ -196,14 +211,9 @@ const Navbar = () => {
             </div>
           </div>
         </div>
-       
       </div>
     </nav>
   );
 };
 
 export default Navbar;
-
-
-
-
