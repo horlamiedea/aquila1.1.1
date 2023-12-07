@@ -14,6 +14,20 @@ import baseURL from "../../services/baseUrl";
 import api from "../../services/api";
 import { SET_REPORT } from "../../redux/slice/appState";
 
+
+const getSeverityColor = (severity) => {
+  switch (severity) {
+    case 'high':
+      return 'bg-red'; // red background for high severity
+    case 'warning':
+      return 'bg-gold';
+    case 'info':
+      return 'bg-green';
+    default:
+      return 'bg-default'; // default background color for other cases
+  }
+};
+
 const ProjectReportAPK = () => {
   const {
     currentProject,
@@ -41,6 +55,13 @@ const ProjectReportAPK = () => {
   const [selectedCertSeverity, setSelectedCertSeverity] = useState("");
 
  
+  const severity = scanFile?.CODE_ANALYSIS[vulnerability]?.metadata?.severity;
+  const severityColorClass = getSeverityColor(severity);
+
+
+  const displaySeverityText = (severity) => {
+    return severity === 'info' ? 'Low' : severity;
+  };
 
   useEffect(() => {
     const fetchReport = async () => {
@@ -692,18 +713,13 @@ const names = ["Severity", "Title", "Description"];
                 <div className="mt-10">
                   <p className="text-xl">{vulnerability}</p>
                   <div className="flex gap-4 items-center mt-4">
-                    <div className="flex gap-2 items-center">
-                      <div className="w-0.5 h-8 bg-red"></div>
-                      <div className="">
-                        <p className="text-sm">Severity</p>
-                        <p>
-                          {
-                            scanFile?.code_analysis[vulnerability]?.metadata
-                              ?.cvss
-                          }
-                        </p>
-                      </div>
-                    </div>
+                  <div className="flex gap-2 items-center">
+      <div className={`${severityColorClass} w-0.5 h-8`}></div>
+      <div className="">
+        <p className="text-sm">Severity</p>
+        <p>{displaySeverityText(severity)}</p>
+      </div>
+    </div>
                     <div className="flex gap-2 items-center">
                       <div className="w-0.5 h-8 bg-black"></div>
                       <div className="">
@@ -773,8 +789,18 @@ const names = ["Severity", "Title", "Description"];
                           }
                         </p>
                       </div>
+
                       <div className="">
-                        <p className="text-sm">Seveirty:</p>
+                        <p className="text-sm">CVSS:</p>
+                        <p className="text-red text-xs">
+                          {
+                            scanFile?.code_analysis[vulnerability]?.metadata
+                              ?.cvss
+                          }
+                        </p>
+                      </div>
+                      <div className="">
+                        <p className="text-sm">Severity:</p>
                         <p className="text-red text-xs">
                           {
                             scanFile?.code_analysis[vulnerability]?.metadata

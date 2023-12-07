@@ -12,6 +12,20 @@ import {
 import baseURL from "../../services/baseUrl";
 import { Link } from "react-router-dom";
 import api from "../../services/api";
+import apk from "../../assets/apk.png"
+
+const getSeverityColor = (severity) => {
+  switch (severity) {
+    case "high":
+      return "bg-red"; // red background for high severity
+    case "warning":
+      return "bg-gold";
+    case "info":
+      return "bg-green";
+    default:
+      return "bg-default"; // default background color for other cases
+  }
+};
 
 const ReportHistoryApk = () => {
   const {
@@ -32,9 +46,7 @@ const ReportHistoryApk = () => {
   const [toggleGood, setToggleGood] = useState(false);
   const [reportToShow, setReportToShow] = useState(null);
 
-  const [vulnerability, setVulnerability] = useState(
-    "IP Address Disclosure in Android"
-  );
+  const [vulnerability, setVulnerability] = useState("");
   const [machoAnalysis, setMachoAnalysis] = useState("");
   const [certificateAnalysis, setCertificateAnalysis] = useState("");
   const [networkSecurity, setNetworkSecurity] = useState("");
@@ -56,6 +68,16 @@ const ReportHistoryApk = () => {
 
   const [selectedSeverity, setSelectedSeverity] = useState("");
 
+  console.log(reportToShow, "show");
+
+  const severity =
+    reportToShow?.CODE_ANALYSIS[vulnerability]?.metadata?.severity;
+  const severityColorClass = getSeverityColor(severity);
+
+  const displaySeverityText = (severity) => {
+    return severity === "info" ? "Low" : severity;
+  };
+
   const filterReportHistory = () => {
     const result = reportHistory?.data?.apk.find(
       (item) => item?.id === reportHistoryId
@@ -71,14 +93,12 @@ const ReportHistoryApk = () => {
     setMachoAnalysis(key);
   };
 
-  const handleCertificateAnlysis = (key) => {
-    setVulnerability("");
-    setMachoAnalysis("");
-    // setBinaryAnalysis("");
-    setCertificateAnalysis(key);
-  };
-
- 
+  // const handleCertificateAnlysis = (key) => {
+  //   setVulnerability("");
+  //   setMachoAnalysis("");
+  //   // setBinaryAnalysis("");
+  //   setCertificateAnalysis(key);
+  // };
 
   const handleNetworkSecurity = (key) => {
     setVulnerability("");
@@ -165,8 +185,6 @@ const ReportHistoryApk = () => {
       calculateCertificateSeverityCounts();
     }
   }, [reportToShow?.CERTIFICATE_ANALYSIS?.certificate_findings]);
-
-
 
   const handleCertificateAnalysisClick = (severity) => {
     setSelectedSeverity(severity);
@@ -552,35 +570,33 @@ const ReportHistoryApk = () => {
                     Certificate Analysis
                   </p>
 
-
-  <div
-    className="flex justify-between items-center cursor-pointer"
-    onClick={() => handleCertificateAnalysisClick('high')}
-  >
-    <p>High</p>
-    <p className="bg-red text-center text-white px-2">
-      {certificateSeverityCounts.high}
-    </p>
-  </div>
-  <div
-    className="flex justify-between items-center cursor-pointer"
-    onClick={() => handleCertificateAnalysisClick('warning')}
-  >
-    <p>Warning</p>
-    <p className="bg-gold text-center text-white px-2 my-6">
-      {certificateSeverityCounts.warning}
-    </p>
-  </div>
-  <div
-    className="flex justify-between items-center cursor-pointer"
-    onClick={() => handleCertificateAnalysisClick('info')}
-  >
-    <p>Info</p>
-    <p className="bg-[#26DA09] text-center text-white px-2">
-      {certificateSeverityCounts.info}
-    </p>
-  </div>
-
+                  <div
+                    className="flex justify-between items-center cursor-pointer"
+                    onClick={() => handleCertificateAnalysisClick("high")}
+                  >
+                    <p>High</p>
+                    <p className="bg-red text-center text-white px-2">
+                      {certificateSeverityCounts.high}
+                    </p>
+                  </div>
+                  <div
+                    className="flex justify-between items-center cursor-pointer"
+                    onClick={() => handleCertificateAnalysisClick("warning")}
+                  >
+                    <p>Warning</p>
+                    <p className="bg-gold text-center text-white px-2 my-6">
+                      {certificateSeverityCounts.warning}
+                    </p>
+                  </div>
+                  <div
+                    className="flex justify-between items-center cursor-pointer"
+                    onClick={() => handleCertificateAnalysisClick("info")}
+                  >
+                    <p>Info</p>
+                    <p className="bg-[#26DA09] text-center text-white px-2">
+                      {certificateSeverityCounts.info}
+                    </p>
+                  </div>
                 </div>
 
                 <div className="w-[95%]  md:w-[80%] ml-6 my-8">
@@ -618,20 +634,35 @@ const ReportHistoryApk = () => {
               <div className="w-[69%]  flex flex-col  h-screen overflow-y-auto pb-14  bg-white drop-shadow-lg">
                 {/* vulnerbility list */}
                 <div className="w-[80%] h-full mx-auto pb-8">
-                  {vulnerability !== "" && (
+                  {vulnerability === "" ? <div className="h-screen flex flex-col items-center justify-center">
+                    <img src={apk} alt="apk" className="text-grey opacity-25 w-40 h-40"/>
+                    <p className="text-center">
+Choose Any Specific Level of Security Vulnerability<br/> to Obtain an In-Depth  Report and Analysis of Its Characteristics and Implications</p>
+                  </div> : (
                     <div className="mt-10">
                       <p className="text-xl">{vulnerability}</p>
                       <div className="flex gap-4 items-center mt-4">
-                        <div className="flex gap-2 items-center">
+                        {/* <div className="flex gap-2 items-center">
                           <div className="w-0.5 h-8 bg-red"></div>
                           <div className="">
                             <p className="text-sm">Severity</p>
                             <p>
                               {
                                 reportToShow?.CODE_ANALYSIS[vulnerability]
-                                  ?.metadata?.cvss
+                                  ?.metadata?.severity
                               }
                             </p>
+                          </div>
+                        </div> */}
+
+                        <div className="flex gap-2 items-center">
+                          <div
+                            className={`${severityColorClass} w-0.5 h-8`}
+                          ></div>
+
+                          <div className="">
+                            <p className="text-sm">Severity</p>
+                            <p>{displaySeverityText(severity)}</p>
                           </div>
                         </div>
                         <div className="flex gap-2 items-center">
@@ -647,6 +678,7 @@ const ReportHistoryApk = () => {
                           </div>
                         </div>
                       </div>
+
                       <div className="mt-4">
                         <p className="text-xl ">Context</p>
                         <p className="my-3 text-xl">Description</p>
@@ -670,13 +702,13 @@ const ReportHistoryApk = () => {
                         <p className="text-xl ">Evidence</p>
 
                         <div></div>
-                        {Object?.entries(
+                        {/* {Object?.entries(
                           reportToShow?.CODE_ANALYSIS[vulnerability]?.files
                         ).map(([key, obj]) => (
                           <p className="text-sm" key={key}>
                             {key} : {obj}
                           </p>
-                        ))}
+                        ))} */}
                       </div>
                       <p className="text-xl mt-3">Recommendation</p>
                       <p className="text-sm pb-7 my-1">
@@ -712,6 +744,16 @@ const ReportHistoryApk = () => {
                               {
                                 reportToShow?.CODE_ANALYSIS[vulnerability]
                                   ?.metadata?.severity
+                              }
+                            </p>
+                          </div>
+
+                          <div className="">
+                            <p className="text-sm">CVSS:</p>
+                            <p className="text-red text-xs">
+                              {
+                                reportToShow?.CODE_ANALYSIS[vulnerability]
+                                  ?.metadata?.cvss
                               }
                             </p>
                           </div>
@@ -805,35 +847,37 @@ const ReportHistoryApk = () => {
                   </div>
                 )} */}
 
-{
-  certificateAnalysis &&
-  vulnerability === "" &&
-  machoAnalysis === "" && (
-    <div className="w-full">
-      <div className="mb-4">
-        <p className="text-2xl">Certificate Analysis Findings</p>
-        {
-          reportToShow.CERTIFICATE_ANALYSIS.certificate_findings
-            .filter(finding => selectedSeverity === "" || finding[0].toLowerCase() === selectedSeverity)
-            .map((finding, index) => (
-              <div key={index} className="mb-4 p-2 grey2">
-                {
-                  Object.entries(finding).map(([key, value], idx) => (
-                    <p key={idx} className="text-sm">
-                      <span className="font-semibold">
-                        {names[idx] || `Field ${idx}`}:
-                      </span> {value.toString()}
-                    </p>
-                  ))
-                }
-              </div>
-            ))
-        }
-      </div>
-    </div>
-  )
-}
-
+                  {certificateAnalysis &&
+                    vulnerability === "" &&
+                    machoAnalysis === "" && (
+                      <div className="w-full">
+                        <div className="mb-4">
+                          <p className="text-2xl">
+                            Certificate Analysis Findings
+                          </p>
+                          {reportToShow.CERTIFICATE_ANALYSIS.certificate_findings
+                            .filter(
+                              (finding) =>
+                                selectedSeverity === "" ||
+                                finding[0].toLowerCase() === selectedSeverity
+                            )
+                            .map((finding, index) => (
+                              <div key={index} className="mb-4 p-2 grey2">
+                                {Object.entries(finding).map(
+                                  ([key, value], idx) => (
+                                    <p key={idx} className="text-sm">
+                                      <span className="font-semibold">
+                                        {names[idx] || `Field ${idx}`}:
+                                      </span>{" "}
+                                      {value.toString()}
+                                    </p>
+                                  )
+                                )}
+                              </div>
+                            ))}
+                        </div>
+                      </div>
+                    )}
 
                   {networkSecurity &&
                     vulnerability === "" &&
