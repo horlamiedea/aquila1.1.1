@@ -27,7 +27,6 @@ const ProjectReportAPK = () => {
   const [downloadOptions, setDownloadOptions] = useState("");
   const [toggleWarning, setToggleWarning] = useState(true);
   const [sendOptions, setSendOptions] = useState("");
-  const [pdfType, setPdfType] = useState("");
   const [toggleInfo, setToggleInfo] = useState(false);
   // const [toggleHigh, setToggleHigh] = useState(false);
   const [toggleGood, setToggleGood] = useState(false);
@@ -36,8 +35,8 @@ const ProjectReportAPK = () => {
   const [machoAnalysis, setMachoAnalysis] = useState("");
   const [certificateAnalysis, setCertificateAnalysis] = useState("");
   const [networkSecurity, setNetworkSecurity] = useState("");
+  const [urls, setUrls] = useState("");
   const [selectedCertSeverity, setSelectedCertSeverity] = useState("");
-  const [selectedSeverity, setSelectedSeverity] = useState("");
 
   useEffect(() => {
     const fetchReport = async () => {
@@ -88,6 +87,14 @@ const ProjectReportAPK = () => {
     setMachoAnalysis("");
     setCertificateAnalysis("");
     setNetworkSecurity(key);
+  };
+
+  const handleUrls = () => {
+    setVulnerability("");
+    setMachoAnalysis("");
+    setCertificateAnalysis("");
+    setNetworkSecurity("");
+    setUrls("display");
   };
 
   const countSeverity = (analysisArray, severityProp) => {
@@ -151,11 +158,6 @@ const ProjectReportAPK = () => {
     certificateFindingsExample
   );
 
-  console.log(certificateCounts, "counts");
-
-
-
-  
   const HandleSendEmail = (event) => {
     const selectedValue = event.target.value;
     setSendOptions(selectedValue);
@@ -165,7 +167,6 @@ const ProjectReportAPK = () => {
     const selectedValue = event.target.value; // Get selected value from select option
     setDownloadOptions(selectedValue);
   };
-
 
   useEffect(() => {
     const token = JSON.parse(localStorage.getItem("user"));
@@ -546,25 +547,36 @@ const ProjectReportAPK = () => {
                 </p>
               </div>
             </div>
+
+            <div
+              className="w-[95%]  md:w-[80%] ml-6 my-8"
+              onClick={() => handleUrls()}
+            >
+              <p className="mb-8 text-sm md:text-2xl">URL&apos;s </p>
+            </div>
           </div>
           <div className="w-[69%]  flex flex-col  h-screen overflow-y-auto pb-14  bg-white drop-shadow-lg">
             {/* vulnerbility list */}
             <div className="w-[80%] h-full mx-auto pb-8">
-            {vulnerability === "" && machoAnalysis === "" && certificateAnalysis === "" && networkSecurity === "" && (
-                    <div className="h-screen flex flex-col items-center justify-center">
-                      <img
-                        src={apk}
-                        alt="apk"
-                        className="text-grey opacity-25 w-40 h-40"
-                      />
-                      <p className="text-center">
-                        Choose Any Specific Level of Security Vulnerability
-                        <br /> to Obtain an In-Depth Report and Analysis of Its
-                        Characteristics and Implications
-                      </p>
-                    </div>
-                  )}
-  {vulnerability !== "" && (
+              {vulnerability === "" &&
+                machoAnalysis === "" &&
+                certificateAnalysis === "" &&
+                networkSecurity === "" &&
+                urls === "" && (
+                  <div className="h-screen flex flex-col items-center justify-center">
+                    <img
+                      src={apk}
+                      alt="apk"
+                      className="text-grey opacity-25 w-40 h-40"
+                    />
+                    <p className="text-center">
+                      Choose Any Specific Level of Security Vulnerability
+                      <br /> to Obtain an In-Depth Report and Analysis of Its
+                      Characteristics and Implications
+                    </p>
+                  </div>
+                )}
+              {vulnerability !== "" && (
                 <div className="mt-10">
                   <p className="text-xl">{vulnerability}</p>
                   <div className="flex gap-4 items-center mt-4">
@@ -616,13 +628,13 @@ const ProjectReportAPK = () => {
                     <p className="text-xl ">Evidence</p>
 
                     <div></div>
-                    {/* {Object.entries(
+                    {Object.entries(
                       scanFile?.code_analysis[vulnerability]?.files
                     ).map(([key, obj]) => (
                       <p className="text-sm" key={key}>
                         {key} : {obj}
                       </p>
-                    ))} */}
+                    ))}
                   </div>
                   <p className="text-xl mt-3">Recommendation</p>
                   <p className="text-sm pb-7 my-1">
@@ -824,6 +836,35 @@ const ProjectReportAPK = () => {
                         </div>
                       )
                   )}
+
+               
+
+{urls && scanFile.urls && (
+  <div className="w-[80%] h-full mx-auto pb-8">
+    <p className="text-2xl">URL&apos;s</p>
+    {Object.entries(scanFile.urls).map(([key, value]) => (
+      <div key={key} className="mb-4 p-2 bg-grey2">
+        <div className="flex items-center">
+          <p className="text-sm font-bold">Path:</p>
+          <p className="ml-2">{value.path}</p>
+        </div>
+        {value.urls.map((url, urlIndex) => (
+          <div key={urlIndex} className="mt-2">
+            <p className="text-sm">URL:</p>
+            <a
+              href={url}
+              className="text-blue-600 hover:text-blue-800 visited:text-purple-600"
+            >
+              {url}
+            </a>
+          </div>
+        ))}
+      </div>
+    ))}
+  </div>
+)}
+
+                     
               </div>
             </div>
           </div>

@@ -21,6 +21,9 @@ const appStateSlice = createSlice({
     ADD_PROJECTS: (state, action) => {
       state.projects = action.payload;
     },
+    DELETE_PROJECT: (state, action) => {
+      state.projects = state.projects.filter(project => project.id !== action.payload);
+    },
     ADD_PROFILE: (state, action) => {
       state.profile = action.payload;
     },

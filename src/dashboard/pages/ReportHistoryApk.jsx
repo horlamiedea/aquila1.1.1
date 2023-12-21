@@ -4,6 +4,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { BsAndroid2, BsFillFolderFill } from "react-icons/bs";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+
 import {
   BiChevronLeft,
   BiSolidChevronDown,
@@ -50,6 +51,7 @@ const ReportHistoryApk = () => {
   const [machoAnalysis, setMachoAnalysis] = useState("");
   const [certificateAnalysis, setCertificateAnalysis] = useState("");
   const [networkSecurity, setNetworkSecurity] = useState("");
+  const [urls, setUrls] = useState("");
 
   const [highSeverityCount, setHighSeverityCount] = useState(0);
   const [warningSeverityCount, setWarningSeverityCount] = useState(0);
@@ -68,9 +70,6 @@ const ReportHistoryApk = () => {
 
   const [selectedSeverity, setSelectedSeverity] = useState("");
 
-
-
-
   const severity =
     reportToShow?.CODE_ANALYSIS[vulnerability]?.metadata?.severity;
   const severityColorClass = getSeverityColor(severity);
@@ -85,32 +84,54 @@ const ReportHistoryApk = () => {
     );
     setReportToShow(result);
   };
+
+  // useEffect(() => {
+  //   filterReportHistory();
+  // }, []);
+
   useEffect(() => {
     filterReportHistory();
-  }, []);
+    // After filtering and setting the reportToShow, set the URLs
+    if (reportToShow && reportToShow.urls) {
+      setUrls(reportToShow.urls); // Set the URLs from the reportToShow
+    }
+  }, [reportToShow]);
 
   const handleMachoAnlysis = (key) => {
     setVulnerability("");
-    setMachoAnalysis(key); 
+    setMachoAnalysis(key);
     setCertificateAnalysis("");
     setNetworkSecurity("");
   };
-  
+
   const handleCertificateAnalysisClick = (severity) => {
     setVulnerability("");
     setMachoAnalysis("");
-    setCertificateAnalysis(severity); 
+    setCertificateAnalysis(severity);
     setNetworkSecurity("");
     setSelectedSeverity(severity);
   };
-  
+
   const handleNetworkSecurity = (key) => {
     setVulnerability("");
     setMachoAnalysis("");
     setCertificateAnalysis("");
-    setNetworkSecurity(key); 
+    setNetworkSecurity(key);
   };
-  
+
+  const handleUrls = () => {
+    // Set all other analysis states to empty
+    setVulnerability("");
+    setMachoAnalysis("");
+    setCertificateAnalysis("");
+    setNetworkSecurity("");
+    setUrls("display");
+    // if (reportToShow && reportToShow.urls) {
+    //   setUrls(reportToShow.urls);
+    // } else {
+    //   setUrls(null);
+    // }
+  };
 
   const calculateSeverityCounts = (analysisData) => {
     const highCount = analysisData.filter(
@@ -190,7 +211,12 @@ const ReportHistoryApk = () => {
     }
   }, [reportToShow?.CERTIFICATE_ANALYSIS?.certificate_findings]);
 
-
+  useEffect(() => {
+    if (reportToShow && reportToShow.urls) {
+      setUrls(reportToShow.urls);
+      console.log("URLs set:", reportToShow.urls);
+    }
+  }, [reportToShow]);
 
   const HandleSendEmail = (event) => {
     const selectedValue = event.target.value;
@@ -632,31 +658,40 @@ const ReportHistoryApk = () => {
                     </p>
                   </div>
                 </div>
+
+                <div
+                  className="w-[95%]  md:w-[80%] ml-6 my-8"
+                  onClick={handleUrls}
+                >
+                  <p>URL&apos;s</p>
+                </div>
               </div>
               <div className="w-[69%]  flex flex-col  h-screen overflow-y-auto pb-14  bg-white drop-shadow-lg">
                 {/* vulnerbility list */}
                 <div className="w-[80%] h-full mx-auto pb-8">
-                {vulnerability === "" && machoAnalysis === "" && certificateAnalysis === "" && networkSecurity === "" && (
-                    <div className="h-screen flex flex-col items-center justify-center">
-                      <img
-                        src={apk}
-                        alt="apk"
-                        className="text-grey opacity-25 w-40 h-40"
-                      />
-                      <p className="text-center">
-                        Choose Any Specific Level of Security Vulnerability
-                        <br /> to Obtain an In-Depth Report and Analysis of Its
-                        Characteristics and Implications
-                      </p>
-                    </div>
-                  )}
+                  {vulnerability === "" &&
+                    machoAnalysis === "" &&
+                    certificateAnalysis === "" &&
+                    networkSecurity === "" &&
+                    urls === "" && (
+                      <div className="h-screen flex flex-col items-center justify-center">
+                        <img
+                          src={apk}
+                          alt="apk"
+                          className="text-grey opacity-25 w-40 h-40"
+                        />
+                        <p className="text-center">
+                          Choose Any Specific Level of Security Vulnerability
+                          <br /> to Obtain an In-Depth Report and Analysis of
+                          Its Characteristics and Implications
+                        </p>
+                      </div>
+                    )}
 
-                       {vulnerability !== "" && (
+                  {vulnerability !== "" && (
                     <div className="mt-10">
                       <p className="text-xl">{vulnerability}</p>
                       <div className="flex gap-4 items-center mt-4">
-                      
-
                         <div className="flex gap-2 items-center">
                           <div
                             className={`${severityColorClass} w-0.5 h-8`}
@@ -704,13 +739,13 @@ const ReportHistoryApk = () => {
                         <p className="text-xl ">Evidence</p>
 
                         <div></div>
-                        {/* {Object?.entries(
+                        {Object?.entries(
                           reportToShow?.CODE_ANALYSIS[vulnerability]?.files
                         ).map(([key, obj]) => (
                           <p className="text-sm" key={key}>
                             {key} : {obj}
                           </p>
-                        ))} */}
+                        ))}
                       </div>
                       <p className="text-xl mt-3">Recommendation</p>
                       <p className="text-sm pb-7 my-1">
@@ -761,9 +796,9 @@ const ReportHistoryApk = () => {
                           </div>
                         </div>
                       </div>
-                       
-                    </div>)}
-                  
+                    </div>
+                  )}
+
                   <div className="mt-10">
                     {machoAnalysis === "high" && (
                       <div>
@@ -964,6 +999,36 @@ const ReportHistoryApk = () => {
                         </div>
                       </div>
                     )}
+ {urls && networkSecurity === "" &&
+  vulnerability === "" &&
+  certificateAnalysis === "" &&
+  machoAnalysis === "" && (
+    <div className="w-[80%] h-full mx-auto pb-8">
+      <p className="text-2xl">URL&apos;s</p>
+      {reportToShow.URLS && Object.entries(reportToShow.URLS).map(([key, value]) => (
+        <div key={key} className="mb-4 p-2 bg-grey2">
+          <div className="flex items-center">
+            <p className="text-sm font-bold">Path:</p>
+            <p className="ml-2">{value.path}</p>
+          </div>
+          {value.urls.map((url, urlIndex) => (
+            <div key={urlIndex} className="mt-2">
+              <p className="text-sm">URL:</p>
+              <a
+                href={url}
+                className="text-blue-600 hover:text-blue-800 visited:text-purple-600"
+              >
+                {url}
+              </a>
+            </div>
+          ))}
+        </div>
+      ))}
+    </div>
+)}
+
+
+
                 </div>
               </div>
             </div>
