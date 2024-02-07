@@ -21,8 +21,9 @@ const appStateSlice = createSlice({
     ADD_PROJECTS: (state, action) => {
       state.projects = action.payload;
     },
+    
     DELETE_PROJECT: (state, action) => {
-      state.projects = state.projects.filter(project => project.id !== action.payload);
+      state.projects = state.projects.filter(project => project.name !== action.payload);
     },
     ADD_PROFILE: (state, action) => {
       state.profile = action.payload;
@@ -50,6 +51,7 @@ export const {
   TOGGLE_OPENMODAL,
   ADD_PROJECTS,
   ADD_PROFILE,
+  DELETE_PROJECT,
   SET_CURRENTPROJECT,
   SET_REPORT,
   SET_SCANFILE, 

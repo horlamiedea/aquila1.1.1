@@ -747,7 +747,7 @@ const ReportHistoryApk = () => {
                               <p className="text-sm mt-2">
                                 <b>Line number</b> {fileDetails.lines} : {filePath}
                               </p>
-                              <p className="text-sm m">
+                              <p className="text-sm ">
                                 <b>Code:</b>
                                 <kdb> {JSON.stringify(fileDetails.code)}</kdb>
                               </p>
