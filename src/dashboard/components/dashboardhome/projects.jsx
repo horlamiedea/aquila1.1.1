@@ -54,8 +54,9 @@ const Projects = () => {
   };
 
   const setCurrentProject = (name) => {
-    disPatch(SET_CURRENTPROJECT(name));
-    localStorage.setItem("currentProject", JSON.stringify(name));
+    disPatch(SET_CURRENTPROJECT(name))
+    localStorage.setItem("currentProject", JSON.stringify(name))
+  
     if (navigateToDashboard(projects, name)) {
       return navigate("/dashboard/project/details");
     }

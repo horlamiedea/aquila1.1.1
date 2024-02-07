@@ -739,13 +739,28 @@ const ReportHistoryApk = () => {
                         <p className="text-xl ">Evidence</p>
 
                         <div></div>
-                        {Object?.entries(
+                        {reportToShow?.CODE_ANALYSIS?.[vulnerability]?.files &&
+                          Object.entries(
+                            reportToShow.CODE_ANALYSIS[vulnerability].files
+                          ).map(([filePath, fileDetails]) => (
+                            <div key={filePath}>
+                              <p className="text-sm mt-2">
+                                <b>Line number</b> {fileDetails.lines} : {filePath}
+                              </p>
+                              <p className="text-sm m">
+                                <b>Code:</b>
+                                <kdb> {JSON.stringify(fileDetails.code)}</kdb>
+                              </p>
+                            </div>
+                          ))}
+
+                        {/* {Object?.entries(
                           reportToShow?.CODE_ANALYSIS[vulnerability]?.files
                         ).map(([key, obj]) => (
                           <p className="text-sm" key={key}>
                             {key} : {obj}
                           </p>
-                        ))}
+                        ))} */}
                       </div>
                       <p className="text-xl mt-3">Recommendation</p>
                       <p className="text-sm pb-7 my-1">
@@ -999,36 +1014,37 @@ const ReportHistoryApk = () => {
                         </div>
                       </div>
                     )}
- {urls && networkSecurity === "" &&
-  vulnerability === "" &&
-  certificateAnalysis === "" &&
-  machoAnalysis === "" && (
-    <div className="w-[80%] h-full mx-auto pb-8">
-      <p className="text-2xl">URL&apos;s</p>
-      {reportToShow.URLS && Object.entries(reportToShow.URLS).map(([key, value]) => (
-        <div key={key} className="mb-4 p-2 bg-grey2">
-          <div className="flex items-center">
-            <p className="text-sm font-bold">Path:</p>
-            <p className="ml-2">{value.path}</p>
-          </div>
-          {value.urls.map((url, urlIndex) => (
-            <div key={urlIndex} className="mt-2">
-              <p className="text-sm">URL:</p>
-              <a
-                href={url}
-                className="text-blue-600 hover:text-blue-800 visited:text-purple-600"
-              >
-                {url}
-              </a>
-            </div>
-          ))}
-        </div>
-      ))}
-    </div>
-)}
-
-
-
+                  {urls &&
+                    networkSecurity === "" &&
+                    vulnerability === "" &&
+                    certificateAnalysis === "" &&
+                    machoAnalysis === "" && (
+                      <div className="w-[80%] h-full mx-auto pb-8">
+                        <p className="text-2xl">URL&apos;s</p>
+                        {reportToShow.URLS &&
+                          Object.entries(reportToShow.URLS).map(
+                            ([key, value]) => (
+                              <div key={key} className="mb-4 p-2 bg-grey2">
+                                <div className="flex items-center">
+                                  <p className="text-sm font-bold">Path:</p>
+                                  <p className="ml-2">{value.path}</p>
+                                </div>
+                                {value.urls.map((url, urlIndex) => (
+                                  <div key={urlIndex} className="mt-2">
+                                    <p className="text-sm">URL:</p>
+                                    <a
+                                      href={url}
+                                      className="text-[#0000EE] hover:text-[#1E90FF] visited:text-[#551A8B]"
+                                    >
+                                      {url}
+                                    </a>
+                                  </div>
+                                ))}
+                              </div>
+                            )
+                          )}
+                      </div>
+                    )}
                 </div>
               </div>
             </div>
