@@ -39,7 +39,7 @@ const IosCard = () => {
 
     const params = {
       project_name,
-      apk: false,
+      // apk: false,
       id: reports?.data.ios[0]?.id,
       ipa: true,
     };
@@ -84,7 +84,7 @@ const IosCard = () => {
     const sendEmail = async () => {
       const params = {
         project_name,
-        apk: false,
+        // apk: false,
         id: reports?.data.ios[0]?.id,
         ipa: true,
         pdf_type: sendOptions,

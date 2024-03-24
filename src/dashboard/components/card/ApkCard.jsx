@@ -49,7 +49,7 @@ const ApkCard = () => {
       project_name,
       apk: true,
       id: reports?.data.apk[0]?.id,
-      ipa: false,
+      // ipa: false,
     };
     const queryString = new URLSearchParams(params).toString();
 
@@ -94,7 +94,7 @@ const ApkCard = () => {
       project_name,
       apk: true,
       id: reports?.data.apk[0]?.id,
-      ipa: false,
+      // ipa: false,
       pdf_type: sendOptions,
     };
 

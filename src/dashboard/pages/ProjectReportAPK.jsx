@@ -349,10 +349,10 @@ const ProjectReportAPK = () => {
                             >
                               <p className="text-sm ">{key}</p>
                               <div className="flex items-center gap-1">
-                                <div className="bg-red w-0.5 h-3"></div>
-                                <p className="text-[12px]">
+                                {/* <div className="bg-red w-0.5 h-3"></div> */}
+                                {/* <p className="text-[12px]">
                                   Severity : {obj?.metadata?.cvss}
-                                </p>
+                                </p> */}
                               </div>
                             </div>
                           )}
@@ -394,10 +394,10 @@ const ProjectReportAPK = () => {
                             >
                               <p className="text-sm ">{key}</p>
                               <div className="flex items-center gap-1">
-                                <div className="bg-gold w-0.5 h-3"></div>
+                                {/* <div className="bg-gold w-0.5 h-3"></div>
                                 <p className="text-[12px]">
                                   Severity : {obj?.metadata?.cvss}
-                                </p>
+                                </p> */}
                               </div>
                             </div>
                           )}
@@ -439,10 +439,10 @@ const ProjectReportAPK = () => {
                             >
                               <p className="text-sm ">{key}</p>
                               <div className="flex items-center gap-1">
-                                <div className="bg-[#26DA09] w-0.5 h-3"></div>
-                                <p className="text-[12px]">
+                                {/* <div className="bg-[#26DA09] w-0.5 h-3"></div> */}
+                                {/* <p className="text-[12px]">
                                   Severity : {obj?.metadata?.cvss}
-                                </p>
+                                </p> */}
                               </div>
                             </div>
                           )}
@@ -581,21 +581,21 @@ const ProjectReportAPK = () => {
               {vulnerability !== "" && (
                 <div className="mt-10">
                   <p className="text-xl">{vulnerability}</p>
-                  <div className="flex gap-4 items-center mt-4">
+                  <div className="flex items-center mt-4">
                     <div className="flex gap-2 items-center">
                       <div className="w-0.5 h-8 bg-red"></div>
                       <div className="">
                         <p className="text-sm">Severity</p>
-                        <p>
+                        {/* <p>
                           {
                             scanFile?.code_analysis[vulnerability]?.metadata
                               ?.cvss
                           }
-                        </p>
+                        </p> */}
                       </div>
                     </div>
                     <div className="flex gap-2 items-center">
-                      <div className="w-0.5 h-8 bg-black"></div>
+                      <div className="w-0.5 h-8 ml-4 bg-black"></div>
                       <div className="">
                         <p className="text-sm">Category</p>
                         <p>
@@ -650,18 +650,25 @@ const ProjectReportAPK = () => {
                     {scanFile?.code_analysis[vulnerability]?.metadata?.ref}
                   </p>
                   <p className="text-xl mt-3">Regulatory</p>
-                  <div className="flex justify-between">
+                  <div className="flex  justify-between">
                     <div className="my-4">
-                      <div className="">
+                      <div>
+                        <div  className="flex items-center">
+
                         <p className="text-sm">CWE :</p>
-                        <p className="text-red text-xs">
+                        <p className="text-red text-xs ml-2">
                           {
                             scanFile?.code_analysis[vulnerability]?.metadata
                               ?.cwe
                           }
                         </p>
+                        </div>
+                      <div className="flex items-center">
+                      <p className="">CVSS:</p> 
+                        <p className="text-sm text-red ml-2"> {scanFile?.code_analysis[vulnerability]?.metadata?.cvss}</p>
+                   </div>
                       </div>
-                      <div className="">
+                      {/* <div className="">
                         <p className="text-sm">Risk OWASP:</p>
                         <p className="text-red text-xs">
                           {
@@ -669,38 +676,35 @@ const ProjectReportAPK = () => {
                               ?.owasp_mobile
                           }
                         </p>
-                      </div>
+                      </div> */}
                       <div className="">
-                        <p className="text-sm">Seveirty:</p>
+                        {/* <p className="text-sm">Seveirty:</p>
                         <p className="text-red text-xs">
                           {
                             scanFile?.code_analysis[vulnerability]?.metadata
                               ?.severity
                           }
-                        </p>
+                        </p> */}
                       </div>
-                    </div>
-                    {/* <div className="">
-                      <div className="">
+                     <div className="">
+                      {/* <div className="">
                         <p className="text-sm">ioXt:</p>
                         <p className="text-red text-xs">SI110</p>
-                      </div>
-                      <div className="">
+                      </div> */}
+                      {/* <div className="">
                         <p className="text-sm">FISMA MED:</p>
                         <p className="text-red text-xs">
                           SC-8 TRANSMISSION CONFIDENTIALITY AND INTEGRITY
                         </p>
-                      </div>
-                      <div className="">
+                      </div> */}
+                      {/* <div className="">
                         <p className="text-sm">PCI:</p>
-                      </div>
-                      <div className="">
-                        <p className="text-sm"><b>CVSS:</b>  {scanFile?.code_analysis[vulnerability]?.metadata?.cvss}</p>
-                        <p className="text-red text-xs">
+                      </div> */}
+                        {/* <p className="text-red text-xs">
                           2021 CWE Top 25 Most Dangerous Software Errors
-                        </p>
+                        </p> */}
                       </div>
-                    </div> */}
+                    </div> 
                   </div>
                 </div>
               )}
@@ -794,7 +798,7 @@ const ProjectReportAPK = () => {
                           {/* Render Warning Severity Items */}
                           <div className="flex items-center">
                             <p className="text-sm font-bold">Severity</p>
-                            <p className="text-gold ml-2">High</p>
+                            <p className="text-red ml-2">High</p>
                           </div>
                           <p className="text-sm break-words">
                             Scope: {item.scope}

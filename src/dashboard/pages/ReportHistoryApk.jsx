@@ -426,12 +426,12 @@ const ReportHistoryApk = () => {
                                     onClick={() => setVulnerability(key)}
                                   >
                                     <p className="text-sm ">{key}</p>
-                                    <div className="flex items-center gap-1">
+                                    {/* <div className="flex items-center gap-1">
                                       <div className="bg-red w-0.5 h-3"></div>
                                       <p className="text-[12px]">
                                         Severity : {obj?.metadata?.cvss}
                                       </p>
-                                    </div>
+                                    </div> */}
                                   </div>
                                 )}
                               </div>
@@ -477,12 +477,12 @@ const ReportHistoryApk = () => {
                                     onClick={() => setVulnerability(key)}
                                   >
                                     <p className="text-sm ">{key}</p>
-                                    <div className="flex items-center gap-1">
+                                    {/* <div className="flex items-center gap-1">
                                       <div className="bg-gold w-0.5 h-3"></div>
                                       <p className="text-[12px]">
                                         Severity : {obj?.metadata?.cvss}
                                       </p>
-                                    </div>
+                                    </div> */}
                                   </div>
                                 )}
                               </div>
@@ -528,12 +528,12 @@ const ReportHistoryApk = () => {
                                     onClick={() => setVulnerability(key)}
                                   >
                                     <p className="text-sm ">{key}</p>
-                                    <div className="flex items-center gap-1">
+                                    {/* <div className="flex items-center gap-1">
                                       <div className="bg-[#26DA09] w-0.5 h-3"></div>
                                       <p className="text-[12px]">
                                         Severity : {obj?.metadata?.cvss}
                                       </p>
-                                    </div>
+                                    </div> */}
                                   </div>
                                 )}
                               </div>
@@ -772,16 +772,16 @@ const ReportHistoryApk = () => {
                       <p className="text-xl mt-3">Regulatory</p>
                       <div className="flex justify-between">
                         <div className="my-4">
-                          <div className="">
+                          <div className="flex items-center">
                             <p className="text-sm">CWE :</p>
-                            <p className="text-red text-xs">
+                            <p className="text-red text-xs ml-2">
                               {
                                 reportToShow?.CODE_ANALYSIS[vulnerability]
                                   ?.metadata?.cwe
                               }
                             </p>
                           </div>
-                          <div className="">
+                          {/* <div className="">
                             <p className="text-sm">Risk OWASP:</p>
                             <p className="text-red text-xs">
                               {
@@ -789,8 +789,8 @@ const ReportHistoryApk = () => {
                                   ?.metadata?.owasp_mobile
                               }
                             </p>
-                          </div>
-                          <div className="">
+                          </div> */}
+                          {/* <div className="">
                             <p className="text-sm">Seveirty:</p>
                             <p className="text-red text-xs">
                               {
@@ -798,11 +798,11 @@ const ReportHistoryApk = () => {
                                   ?.metadata?.severity
                               }
                             </p>
-                          </div>
+                          </div> */}
 
-                          <div className="">
+                          <div className="flex items-center">
                             <p className="text-sm">CVSS:</p>
-                            <p className="text-red text-xs">
+                            <p className="text-red text-xs ml-2">
                               {
                                 reportToShow?.CODE_ANALYSIS[vulnerability]
                                   ?.metadata?.cvss

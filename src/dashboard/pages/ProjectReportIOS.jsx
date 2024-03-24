@@ -41,7 +41,7 @@ const ProjectReportIOS = () => {
     const token = JSON.parse(localStorage.getItem("user"));
     const params = {
       project_name,
-      apk: pdfType === "apk" ? true : false,
+      // apk: pdfType === "apk" ? true : false,
       id: reports?.data[pdfType][0]?.id,
       ipa: pdfType === "ios" ? true : false,
     };
